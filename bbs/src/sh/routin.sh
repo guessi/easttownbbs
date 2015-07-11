@@ -1,11 +1,11 @@
 #!/bin/bash
-
+####################################################################
+#看板排行榜統計
 basedir=/home/bbs/manage
 logfile=/home/bbs/gem/@/@hotboard
 hotweek=/home/bbs/gem/@/@hotweek
 hotmonth=/home/bbs/gem/@/@hotmonth
 yestarday=`date --date='1 day ago' +%y%m%d`
-
 if [ ! -d "$basedir/brd" ]; then
 	mkdir -p $basedir/brd
 fi
@@ -41,4 +41,5 @@ do
 		echo "$board 0"|awk '{printf("%-15s%s\n",$1,$2)}'       >> $hotmonth
 	fi
 done
-
+}
+#####################################################################
