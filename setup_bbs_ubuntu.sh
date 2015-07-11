@@ -72,7 +72,7 @@ echo "Done"
 mkdir -p ${BBSHOME}
 git clone ${GITSRC}
 cp -rf ${DIR}/easttownbbs/bbs/* ${BBSHOME}
-sed -i '/default BBSGID/99/999' ${BBSHOME}/src/include/config.h
+sed -i '/^#define BBSGID/s/[ \t]\+99/\t\t999/' ${BBSHOME}/src/include/config.h
 chown -R bbs:bbs ${BBSHOME}
 
 echo -n "Setting up for rc.local... "
@@ -104,7 +104,7 @@ egrep '(xchat|bbsnntp)' /etc/services >/dev/null
 if [ $? -eq 0 ]; then
   echo "Skip, already exist"
 else
-  sed -i '/telnet[ \t]\+23\/tcp$/a\
+  sed -i '/^telnet[ \t]\+23\/tcp$/a\
 xchat\t3838\/tcp\
 xchat\t3838\/udp\
 bbsnntp 7777\/tcp usenet\
