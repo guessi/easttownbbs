@@ -24,7 +24,7 @@ SO =	bar.so bingo.so bj.so bwboard.so chessmj.so dice.so dragon.so fantan.so \
 .SUFFIXES: .c .o .so
 
 .c.o:	;  $(CC) $(CFLAGS) -c $*.c
-.o.so:	;  ld -s -G $*.o -o $*.so -L../lib -ldao
+.o.so:	;  $(CC) -shared $*.o -o $*.so -L../lib -ldao
 
 
 all: 
@@ -38,22 +38,22 @@ all:
 	@echo " make cygwin  : for Microsoft Windows and Cygwin gcc"
 
 sun:
-	@$(MAKE) CFLAGS="-O2 -pipe -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
+	@$(MAKE) CFLAGS="-O2 -pipe -fPIC -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
 
 linux:
-	@$(MAKE) CFLAGS="-DLINUX -O2 -pipe -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
+	@$(MAKE) CFLAGS="-DLINUX -O2 -pipe -fPIC -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
 
 solaris:
-	@$(MAKE) CFLAGS="-DSOLARIS -DSYSV -O2 -pipe -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
+	@$(MAKE) CFLAGS="-DSOLARIS -DSYSV -O2 -pipe -fPIC -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
 
 sol-x86:
 	@$(MAKE) CFLAGS="-DSOLARIS -DSYSV -O2 -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
 
 freebsd:
-	@$(MAKE) CFLAGS="-DBSD44 -O2 -pipe -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
+	@$(MAKE) CFLAGS="-DBSD44 -O2 -pipe -fPIC -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
 
 bsd:
-	@$(MAKE) CFLAGS="-DBSD44 -O2 -pipe -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
+	@$(MAKE) CFLAGS="-DBSD44 -O2 -pipe -fPIC -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
 
 cygwin:
 	@cd ../maple; make cygwin
