@@ -1,6 +1,6 @@
 ABOUT THE PROJECT
 -----------------
-`MapleBBS-EastTown` is a project based on `MapleBBS-3.10-itoc`, which is written in C Code and some shell scripts 
+`MapleBBS-EastTown` is a project based on `MapleBBS-3.10-itoc`, which is written in C Code and some shell scripts
 
 BBS, DEFINITION
 ---------------
@@ -12,8 +12,8 @@ LICENSE
 
 AUTHORS
 -------
-* `MapleBBS-3.10-itoc`: itoc (itoc.bbs@cpu.tfcis.org)  
-* `MapleBBS-EastTown`: guessi (guessi@gmail.com)  
+* `MapleBBS-3.10-itoc`: itoc (itoc.bbs@cpu.tfcis.org)
+* `MapleBBS-EastTown`: guessi (guessi@gmail.com)
 * `(more)`
 
 README
@@ -22,10 +22,10 @@ README
 
 SUGGESTED ENVIRONMENTS
 ----------------------
-* `Ubuntu Server 10.04.4 LTS`  
-* `Ubuntu Server 12.04.2 LTS`  
-* `CentOS 6.2 Final`  
-* `FreeBSD 8.2R`  
+* `Ubuntu Server 10.04.4 LTS`
+* `Ubuntu Server 12.04.2 LTS`
+* `CentOS 6.2 Final`
+* `FreeBSD 8.2R`
 
 
 * for Ubuntu Server users, just execute `setup_bbs_ubuntu.sh`, and it's done!
@@ -51,12 +51,12 @@ ADD USER/GROUP
 --------------
 
 **for FreeBSD:**
-> `$ su -`  
+> `$ su -`
 
-> `# vipw`  
+> `# vipw`
 >>     `! bbs:*:9999:99::0:0:BBS Administrator:/home/bbs:/bin/tcsh`
 
-> `# vi /etc/group`  
+> `# vi /etc/group`
 >>     ! bbs:*:99:bbs
 
 > `# mkdir -p /home/bbs`
@@ -66,10 +66,10 @@ ADD USER/GROUP
 **for Linux:**
 > `$ sudo su -` or `su -`
 
-> `# vipw`  
+> `# vipw`
 >>     `! bbs:x:9999:999:BBS Admin:/home/bbs:/bin/bash`
 
-> `# vi /etc/group`  
+> `# vi /etc/group`
 >>     ! bbs:*:999:bbs
 
 > `# mkdir /home/bbs`
@@ -79,9 +79,9 @@ ADD USER/GROUP
 **for ALL:**
 > `$ sudo su -` or `su -`
 
-> `# vi /etc/rc.local`  
+> `# vi /etc/rc.local`
 >>       #!/bin/sh
->>     
+>>
 >>     + /home/bbs/bin/bbsd
 >>     + /home/bbs/bin/bmtad
 >>     + /home/bbs/bin/gemd
@@ -91,7 +91,7 @@ ADD USER/GROUP
 >>     + /home/bbs/bin/bnntpd
 >>     + /home/bbs/bin/xchatd
 >>     + /home/bbs/innd/innbbsd
->>     
+>>
 >>     + su bbs -c '/home/bbs/bin/camera'
 >>     + su bbs -c '/home/bbs/bin/account'
 >>       ...
@@ -110,21 +110,21 @@ ADD USER/GROUP
 
 GET THE CODE
 ------------
-> `(switch to 'bbs')`  
+> `(switch to 'bbs')`
 
-> `$ cd ~ && git clone git://github.com/guessi/easttownbbs.git`  
+> `$ cd ~ && git clone git://github.com/guessi/easttownbbs.git`
 
-> `$ mv ~/easttownbbs/bbs/* ~ && rm -rf ~/easttownbbs`  
+> `$ mv ~/easttownbbs/bbs/* ~ && rm -rf ~/easttownbbs`
 
-> `$ vi ~/src/include/config.h`  
->>     ! #define BBSUID 9999  
->>     ! #define BBSGID 999  
+> `$ vi ~/src/include/config.h`
+>>     ! #define BBSUID 9999
+>>     ! #define BBSGID 999
 
 > `(switch to 'root')`
 
 > `# chown -R bbs:bbs ~`
 
-> `(switch to 'bbs')`  
+> `(switch to 'bbs')`
 
 > `$ cd ~/src && make clean *ostype* install`
 
@@ -132,9 +132,8 @@ TEST IT
 -------
 > `(restore your data)`
 
-> `(reboot your server)`  
+> `(reboot your server)`
 
-> `$ telnet 127.0.0.1 23`  
+> `$ telnet 127.0.0.1 23`
 
-> `(check if everything works fine, enjoy)`  
-
+> `(check if everything works fine, enjoy)`
