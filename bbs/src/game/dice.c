@@ -104,7 +104,7 @@ main_dice()
 ¢|¢w¢w¢r¢w¢r¢w¢r¢w¢r¢w¢r¢w¢r¢w¢r¢w¢r¢w¢r¢w¢r¢w¢r¢w¢r¢w¢r¢w¢r¢w¢r¢w¢r¢w¢}
 #endif
 
-  out_song(0);
+  out_song();
 
   while (1)
   {

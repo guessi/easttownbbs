@@ -199,8 +199,12 @@ find_all(set)
     a[8] = 1;			/* 同花 + 順 = 同花順 */
 
   for (i = 8; i >= 0; i--)
+  {
     if (a[i])
       return i;
+  }
+
+  return 0;
 }
 
 

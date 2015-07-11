@@ -240,8 +240,8 @@ ftkDefault(ch)
       move(b_lines - 2, cmdCol + 35);
       outs(&cmdBuf[cmdCol++]);
     }
-    return NOTHING;
   }
+  return NOTHING;
 }
 
 

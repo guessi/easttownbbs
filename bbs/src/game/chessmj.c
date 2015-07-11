@@ -943,9 +943,8 @@ next_game:
     print_host();
     move(b_lines, 0);
     clrtoeol();
-    vmsg(msg);
-//    prints("\033[1;37;44m ◆ %-55s \033[1;33;46m [請按任意鍵繼續] \033[m", msg);
-//    vkey();
+    prints("\033[1;37;44m ◆ %-55s \033[1;33;46m [請按任意鍵繼續] \033[m", msg);
+    vkey();
 
   }		/* while 迴圈結束 */
 

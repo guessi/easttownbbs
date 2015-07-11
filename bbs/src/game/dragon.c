@@ -54,7 +54,7 @@ draw_card(x, y, card)
 /*-------------------------------------------------------*/
 
 
-static int
+static void
 draw_explain()
 {
   vs_bar("±µÀs¹CÀ¸");

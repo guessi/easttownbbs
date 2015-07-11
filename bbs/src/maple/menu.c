@@ -1,15 +1,18 @@
 /*-------------------------------------------------------*/
-/* menu.c    ( NTHU CS MapleBBS Ver 3.00 )               */
+/* menu.c	( NTHU CS MapleBBS Ver 3.00 )		 */
 /*-------------------------------------------------------*/
-/* target : menu/help/movie routines                     */
-/* create : 95/03/29                                     */
-/* update : 97/03/29                                     */
+/* target : menu/help/movie routines		 	 */
+/* create : 95/03/29				 	 */
+/* update : 97/03/29				 	 */
 /*-------------------------------------------------------*/
+
 
 #include "bbs.h"
 
+
 extern UCACHE *ushm;
 extern FCACHE *fshm;
+
 
 #ifndef ENHANCED_VISIT
 extern time_t brd_visit[];
@@ -17,17 +20,19 @@ extern time_t brd_visit[];
 
 
 /* ----------------------------------------------------- */
-/* 離開 BBS 站                                           */
+/* 離開 BBS 站						 */
 /* ----------------------------------------------------- */
 
-#define    FN_RUN_NOTE_PAD    "run/note.pad"
-#define    FN_RUN_NOTE_TMP    "run/note.tmp"
+
+#define	FN_RUN_NOTE_PAD	"run/note.pad"
+#define	FN_RUN_NOTE_TMP	"run/note.tmp"
+
 
 typedef struct
 {
   time_t tpad;
   char msg[400];
-}    Pad;
+}      Pad;
 
 
 int
@@ -50,11 +55,11 @@ pad_view()
       vmsg(NULL);
       break;
     }
-    else if (!(count % 5))    /* itoc.020122: 有 pad 才印 */
+    else if (!(count % 5))	/* itoc.020122: 有 pad 才印 */
     {
       clear();
       move(0, 23);
-      prints("【 酸 甜 苦 辣 留 言 板 】        第 %d 頁\n\n", count / 5 + 1);
+      prints("【 酸 甜 苦 辣 留 言 板 】                第 %d 頁\n\n", count / 5 + 1);
     }
 
     outs(pad->msg);
@@ -64,10 +69,10 @@ pad_view()
     {
       move(b_lines, 0);
       outs("請按 [SPACE] 繼續觀賞，或按其他鍵結束： ");
-
       /* itoc.010127: 修正在偵測左右鍵全形下，按左鍵會跳離二層選單的問題 */
+
       if (vkey() != ' ')
-        break;
+	break;
     }
   }
 
@@ -89,7 +94,7 @@ pad_draw()
 
   /* itoc.010309: 留言板提供不同的顏色 */
   color = vans("心情顏色 1) \033[41m  \033[m 2) \033[42m  \033[m 3) \033[43m  \033[m "
-               "4) \033[44m  \033[m 5) \033[45m  \033[m 6) \033[46m  \033[m [Q] ");
+    "4) \033[44m  \033[m 5) \033[45m  \033[m 6) \033[46m  \033[m [Q] ");
 
   if (color < '1' || color > '6')
     return XEASY;
@@ -103,13 +108,13 @@ pad_draw()
     clrtobot();
     outs("\n請留言 (至多三行)，按[Enter]結束");
     for (i = 0; (i < 3) &&
-        vget(16 + i, 0, "：", buf[i], 71, DOECHO); i++);
+      vget(16 + i, 0, "：", buf[i], 71, DOECHO); i++);
     cc = vans("(S)存檔觀賞 (E)重新來過 (Q)算了？[S] ");
     if (cc == 'q' || i == 0)
       return 0;
   } while (cc == 'e');
 
-  time(&(pad.tpad));
+  time(&pad.tpad);
 
   /* itoc.020812.註解: 改版面的時候要注意 struct Pad.msg[] 是否夠大 */
   str = pad.msg;
@@ -121,14 +126,14 @@ pad_draw()
     str[cc++] = ' ';
 
   sprintf(str + cc,
-      "\033[1;44m %s \033[m╮\n"
-      "│  \033[1;%dm%-70s\033[m  │\n"
-      "│  \033[1;%dm%-70s\033[m  │\n"
-      "╰  \033[1;%dm%-70s\033[m  ╯\n",
-      Btime(&(pad.tpad)),
-      pcolors[color], buf[0],
-      pcolors[color], buf[1],
-      pcolors[color], buf[2]);
+    "\033[1;44m %s \033[m╮\n"
+    "│  \033[1;%dm%-70s\033[m  │\n"
+    "│  \033[1;%dm%-70s\033[m  │\n"
+    "╰  \033[1;%dm%-70s\033[m  ╯\n",
+    Btime(&pad.tpad),
+    pcolors[color], buf[0],
+    pcolors[color], buf[1],
+    pcolors[color], buf[2]);
 
   f_cat(FN_RUN_NOTE_ALL, str);
 
@@ -148,7 +153,7 @@ pad_draw()
     {
       fwrite(pp, sizeof(Pad), 1, fpw);
       if ((++i > NOTE_MAX) || (pp->tpad < cc))
-        break;
+	break;
     }
     close(fdr);
   }
@@ -157,7 +162,6 @@ pad_draw()
 
   rename(FN_RUN_NOTE_TMP, FN_RUN_NOTE_PAD);
   pad_view();
-
   return 0;
 }
 
@@ -696,9 +700,27 @@ static MENU menu_song[] =
 
 #ifdef HAVE_GAME
 
-/* --------------------------------------------------- */
-/* game menu                                           */
-/* --------------------------------------------------- */
+#if 0
+
+  itoc.010426.註解:
+  益智遊戲不用賭金制度，讓玩家玩好玩的，只加錢，不減錢。
+
+  itoc.010714.註解:
+  (a) 每次玩遊戲的總期望值應在 1.01，一個晚上約可玩 100 次遊戲，
+      若將總財產投入去玩遊戲，則 1.01^100 = 2.7 倍/每玩一個晚上。
+  (b) 若各項機率不均等，也應維持在 1.0 ~ 1.02 之間，讓玩家一定能賺錢，
+      且若一直押最高期望值的那一項，也不會賺得過於離譜。
+  (c) 原則上，機率越低者其期望值應為 1.02，機率較高者其期望值應為 1.01。
+
+  itoc.011011.註解:
+  為了避免 user multi-login 玩來洗錢，
+  所以在玩遊戲的開始就要檢查是否重覆 login 即 if (HAS_STATUS(STATUS_COINLOCK))。
+
+#endif
+
+  /* --------------------------------------------------- */
+  /* game menu						 */
+  /* --------------------------------------------------- */
 
 static MENU menu_game[];
 
@@ -707,28 +729,28 @@ static MENU menu_game1[] =
   "bin/liteon.so:main_liteon", 0, - M_GAME,
   "0LightOn   ♂ 房間開燈 ♀",
 
-  "bin/guessnum.so:guessNum",  0, - M_GAME,
+  "bin/guessnum.so:guessNum", 0, - M_GAME,
   "1GuessNum  ♂ 玩猜數字 ♀",
 
-  "bin/guessnum.so:fightNum",  0, - M_GAME,
+  "bin/guessnum.so:fightNum", 0, - M_GAME,
   "2FightNum  ♂ 互猜數字 ♀",
 
-  "bin/km.so:main_km",         0, - M_GAME,
+  "bin/km.so:main_km", 0, - M_GAME,
   "3KongMing  ♂ 孔明棋譜 ♀",
 
   "bin/recall.so:main_recall", 0, - M_GAME,
   "4Recall    ♂ 回憶之卵 ♀",
 
-  "bin/mine.so:main_mine",     0, - M_GAME,
+  "bin/mine.so:main_mine", 0, - M_GAME,
   "5Mine      ♂ 亂踩地雷 ♀",
 
-  "bin/fantan.so:main_fantan", 0, - M_GAME,
+  "bin/fantan.so:main_fantan", 0, - M_GAME, 
   "6Fantan    ♂ 番攤接龍 ♀",
 
   "bin/dragon.so:main_dragon", 0, - M_GAME,
   "7Dragon    ♂ 接龍遊戲 ♀",
 
-  "bin/nine.so:main_nine",     0, - M_GAME,
+  "bin/nine.so:main_nine", 0, - M_GAME,
   "8Nine      ♂ 天地九九 ♀",
 
   menu_game, PERM_MENU + '0', M_XMENU,
@@ -737,31 +759,31 @@ static MENU menu_game1[] =
 
 static MENU menu_game2[] =
 {
-  "bin/dice.so:main_dice",       0, - M_GAME,
+  "bin/dice.so:main_dice", 0, - M_GAME,
   "0Dice      ♂ 狂擲骰子 ♀",
 
-  "bin/gp.so:main_gp",           0, - M_GAME,
+  "bin/gp.so:main_gp", 0, - M_GAME,
   "1GoldPoker ♂ 金牌撲克 ♀",
 
-  "bin/bj.so:main_bj",           0, - M_GAME,
+  "bin/bj.so:main_bj", 0, - M_GAME,
   "2BlackJack ♂ 二十一點 ♀",
 
   "bin/chessmj.so:main_chessmj", 0, - M_GAME,
   "3ChessMJ   ♂ 象棋麻將 ♀",
 
-  "bin/seven.so:main_seven",     0, - M_GAME,
+  "bin/seven.so:main_seven", 0, - M_GAME,
   "4Seven     ♂ 賭城七張 ♀",
-
-  "bin/race.so:main_race",       0, - M_GAME,
+ 
+  "bin/race.so:main_race", 0, - M_GAME,
   "5Race      ♂ 進賽馬場 ♀",
 
-  "bin/bingo.so:main_bingo",     0, - M_GAME,
+  "bin/bingo.so:main_bingo", 0, - M_GAME,
   "6Bingo     ♂ 賓果大戰 ♀",
 
-  "bin/marie.so:main_marie",     0, - M_GAME,
+  "bin/marie.so:main_marie", 0, - M_GAME,
   "7Marie     ♂ 大小瑪莉 ♀",
 
-  "bin/bar.so:main_bar",         0, - M_GAME,
+  "bin/bar.so:main_bar", 0, - M_GAME,
   "8Bar       ♂ 吧台瑪莉 ♀",
 
   menu_game, PERM_MENU + '0', M_XMENU,
@@ -776,11 +798,11 @@ static MENU menu_game3[] =
   "bin/pushbox.so:main_pushbox", 0, - M_GAME,
   "1PushBox   ♂ 倉庫番番 ♀",
 
-  "bin/tetris.so:main_tetris",   0, - M_GAME,
+  "bin/tetris.so:main_tetris", 0, - M_GAME,
   "2Tetris    ♂ 俄羅斯塊 ♀",
 
-  "bin/gray.so:main_gray",       0, - M_GAME,
-  "3Gray      ♂ 淺灰大戰 ♀",
+  "bin/reversi.so:main_reversi", 0, - M_GAME,
+  "3Reversi   ♂ 淺灰大戰 ♀",
 
   menu_game, PERM_MENU + '0', M_XMENU,
   "反斗特區"
@@ -800,7 +822,6 @@ static MENU menu_game[] =
   menu_main, PERM_MENU + '1', M_XMENU,
   "遊戲人生"
 };
-
 #endif
 
 

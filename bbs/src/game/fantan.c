@@ -203,7 +203,7 @@ game_start:
       {
       case 'q':
 	vmsg(MSG_QUITGAME);
-	return;
+	return 0;
 
       case 'r':
 	goto game_start;
@@ -261,7 +261,7 @@ game_start:
 	    difftime(time(0), init_time), level);
 	  vmsg(buf);
 	  addmoney(level * 100);
-	  return;	  
+	  return 0;	  
 	}
 	break;
 
@@ -334,7 +334,7 @@ game_start:
       {
       case 'q':
 	vmsg(MSG_QUITGAME);
-	return;
+	return 0;
 
       case 'r':
 	goto game_start;
@@ -409,5 +409,7 @@ game_start:
       }
     }
   }
+
+  return 0;
 }
 #endif	/* HAVE_GAME */

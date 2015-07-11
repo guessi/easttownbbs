@@ -60,7 +60,7 @@ total_money()			/* 是否有下注 */
 }
 
 
-static int
+static void
 run(step, last, freq)
   int step;		/* 位置 */
   int last;		/* 1: 最後一步  0: 中間步 */
@@ -178,6 +178,8 @@ get_dst(item)		/* 傳入中的項目選取最後停留的位置 */
     if (bar[dst] == item)
       return dst;
   }
+
+  return 0;
 }
 
 
@@ -270,10 +272,10 @@ main_bar()
 
       move(b_lines - 1, 0);
       clrtoeol();
-      prints("   ");
+      outs("\033[1m   ");
       for (i = 1; i < 10; i++)
-	prints("%6d  ", money[i]);  
-      prints("\n   您的籌碼還有 %d 元", cuser.money);
+	prints("\033[3%dm%6d  ", i, money[i]);  
+      prints("\n\033[m         籌碼還有 %d 元     ", cuser.money);
     }
 
     /* 開始跑了 */
@@ -311,7 +313,7 @@ main_bar()
 
     if (!money[item])
     {
-      vmsg("呃 槓龜了... =  =");
+      outs("摃龜 +_+");
     }
     else
     {

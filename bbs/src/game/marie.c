@@ -26,8 +26,7 @@ get_item()		/* 亂數選取要中的項目 */
 賠率：   5   500   200   100  1000    50    25    10     2     0
 #endif
 
-//  int randnum = rnd(1000);	/* 賠率 * 機率 = 期望值 (每押 1 元所回收的金額) */
-  int randnum = (rand() * rnd(cuser.userno) + 1) % 1000;
+  int randnum = rnd(1000);	/* 賠率 * 機率 = 期望值 (每押 1 元所回收的金額) */
 
   if (randnum < 500)		/* 2 * 0.500 = 1 */
     return 8;

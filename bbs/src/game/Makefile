@@ -13,20 +13,18 @@
 # ------------------------------------------------------ #
 
 
-SO =	railway.so bwboard.so dragon.so \
-	gray.so km.so guessnum.so liteon.so mine.so \
-	pushbox.so recall.so tetris.so \
-        bar.so bingo.so bj.so chessmj.so dice.so fantan.so \
-        gp.so marie.so nine.so seven.so race.so
+CC =	gcc
 
-# 後兩排需要錢幣系統
+SO =	bar.so bingo.so bj.so bwboard.so chessmj.so dice.so dragon.so fantan.so \
+	gp.so guessnum.so km.so liteon.so marie.so mine.so nine.so pushbox.so \
+	race.so recall.so reversi.so seven.so tetris.so
 
 
 .SUFFIXES:
 .SUFFIXES: .c .o .so
 
 .c.o:	;  $(CC) $(CFLAGS) -c $*.c
-.o.so:	;  gcc -shared $*.o -o $*.so -L../lib -ldao
+.o.so:	;  ld -s -G $*.o -o $*.so -L../lib -ldao
 
 
 all: 
@@ -40,22 +38,22 @@ all:
 	@echo " make cygwin  : for Microsoft Windows and Cygwin gcc"
 
 sun:
-	@$(MAKE) CC=gcc CFLAGS="-O2 -pipe -fomit-frame-pointer -fno-stack-protector -Wunused-result -Wunused -I../include -fPIC" $(SO)
+	@$(MAKE) CFLAGS="-O2 -pipe -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
 
 linux:
-	@$(MAKE) CC=gcc CFLAGS="-DLINUX -O2 -pipe -fomit-frame-pointer -fno-stack-protector -Wunused-result -Wunused -I../include -fPIC" $(SO)
+	@$(MAKE) CFLAGS="-DLINUX -O2 -pipe -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
 
 solaris:
-	@$(MAKE) CC=gcc CFLAGS="-DSOLARIS -DSYSV -O2 -pipe -fomit-frame-pointer -fno-stack-protector -Wunused-result -Wunused -I../include -fPIC" $(SO)
+	@$(MAKE) CFLAGS="-DSOLARIS -DSYSV -O2 -pipe -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
 
 sol-x86:
-	@$(MAKE) CC=gcc CFLAGS="-DSOLARIS -DSYSV -O2 -fomit-frame-pointer -fno-stack-protector -Wunused-result -Wunused -I../include -fPIC" $(SO)
+	@$(MAKE) CFLAGS="-DSOLARIS -DSYSV -O2 -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
 
 freebsd:
-	@$(MAKE) CC=gcc CFLAGS="-DBSD44 -O2 -pipe -fomit-frame-pointer -fno-stack-protector -Wunused-result -Wunused -I../include -fPIC" $(SO)
+	@$(MAKE) CFLAGS="-DBSD44 -O2 -pipe -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
 
 bsd:
-	@$(MAKE) CC=gcc CFLAGS="-DBSD44 -O2 -pipe -fomit-frame-pointer -fno-stack-protector -Wunused-result -Wunused -I../include -fPIC" $(SO)
+	@$(MAKE) CFLAGS="-DBSD44 -O2 -pipe -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" $(SO)
 
 cygwin:
 	@cd ../maple; make cygwin

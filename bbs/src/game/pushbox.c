@@ -98,7 +98,7 @@ map_init(fp)
 }
 
 
-static int
+static void
 map_line(x)	/* ¦L¥X²Ä x ¦C */
   int x;
 {
