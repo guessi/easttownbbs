@@ -26,13 +26,14 @@ PASSWORD="changeme"
 ENCRYPTED=`openssl passwd -1 ${PASSWORD}`
 
 # package setup
-echo -n "Preparing for the required packages... "
-apt-get update >/dev/null
-apt-get install -y git wget build-essential csh gcc libc6 libc6-dev make >/dev/null
-echo "Done"
+echo "apt-get update... "
+apt-get update -qq
+
+echo "Preparing for the required packages... "
+apt-get install -qqy git wget build-essential csh gcc libc6 libc6-dev make
 
 echo -n "Generating group \"bbs\"... "
-grep "^${GROUP}" /etc/group >/dev/null
+grep -q "^${GROUP}" /etc/group
 if [ $? -eq 0 ]; then
   echo "Skip, already exist"
 else
