@@ -76,7 +76,7 @@ sed -i '/^#define BBSGID/s/[ \t]\+99/\t\t999/' ${BBSHOME}/src/include/config.h
 chown -R bbs:bbs ${BBSHOME}
 
 echo -n "Setting up for rc.local... "
-grep bbsd /etc/rc.local >/dev/null
+grep -q "bbsd" /etc/rc.local
 if [ $? -eq 0 ]; then
   echo "Skip, already exist"
 else
@@ -100,15 +100,15 @@ exit 0/g" /etc/rc.local
 fi
 
 echo -n "Checking for xchat/bbsnntp services existance... "
-egrep '(xchat|bbsnntp)' /etc/services >/dev/null
+egrep -q '(xchat|bbsnntp)' /etc/services
 if [ $? -eq 0 ]; then
   echo "Skip, already exist"
 else
   sed -i '/^telnet[ \t]\+23\/tcp$/a\
-xchat\t3838\/tcp\
-xchat\t3838\/udp\
-bbsnntp 7777\/tcp usenet\
-bbsnntp 7777\/udp usenet' /etc/services
+xchat\t\t3838\/tcp\
+xchat\t\t3838\/udp\
+bbsnntp\t\t7777\/tcp\tusenet\
+bbsnntp\t\t7777\/udp\tusenet' /etc/services
   echo "Done"
 fi
 
