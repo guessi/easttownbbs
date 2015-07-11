@@ -12,6 +12,8 @@
 #define _MODES_C_
 
 #include "bbs.h"
+
+
 #include <sys/wait.h>
 #include <netinet/tcp.h>
 #include <sys/resource.h>
@@ -49,19 +51,19 @@
 #endif
 
 /* ----------------------------------------------------- */
-/* HTTP commands                                         */
+/* HTTP commands					 */
 /* ----------------------------------------------------- */
 
 typedef struct
 {
   int (*func) ();
   char *cmd;
-  int len;            /* strlen(Command.cmd) */
+  int len;			/* strlen(Command.cmd) */
 }      Command;
 
 
 /* ----------------------------------------------------- */
-/* client connection structure                           */
+/* client connection structure				 */
 /* ----------------------------------------------------- */
 
 typedef struct Agent
@@ -93,7 +95,7 @@ typedef struct Agent
   /* input ノ */
 
   char *data;
-  int size;            /* ヘ玡 data ┮ malloc 丁 */
+  int size;			/* ヘ玡 data ┮ malloc 丁 */
   int used;
 
   /* output ノ */
@@ -150,21 +152,21 @@ static char *http_msg[LAST_HS] =
 };
 
 
-#define HS_REFRESH    0x0100    /* 笆铬(箇砞琌3) */
+#define HS_REFRESH	0x0100	/* 笆铬(箇砞琌3) */
 
 
 /* ----------------------------------------------------- */
-/* AM : Agent Mode                                       */
+/* AM : Agent Mode					 */
 /* ----------------------------------------------------- */
 
-#define AM_GET        0x010
-#define AM_POST       0x020
+#define AM_GET		0x010
+#define AM_POST		0x020
 
 
 /* ----------------------------------------------------- */
-/* operation log and debug information                   */
+/* operation log and debug information			 */
 /* ----------------------------------------------------- */
-/* @START | ... | time                                   */
+/* @START | ... | time					 */
 /* ----------------------------------------------------- */
 
 static FILE *flog;
@@ -206,10 +208,9 @@ logit(key, msg)
   time(&now);
   p = localtime(&now);
   /* Thor.990329: y2k */
-  fprintf(flog,
-          "%s\t%s\t%02d/%02d/%02d %02d:%02d:%02d\n",
-          key, msg, p->tm_year % 100, p->tm_mon + 1, p->tm_mday,
-          p->tm_hour, p->tm_min, p->tm_sec);
+  fprintf(flog, "%s\t%s\t%02d/%02d/%02d %02d:%02d:%02d\n",
+    key, msg, p->tm_year % 100, p->tm_mon + 1, p->tm_mday,
+    p->tm_hour, p->tm_min, p->tm_sec);
 }
 
 
@@ -220,7 +221,7 @@ log_open()
 
   umask(077);
 
-  if ((fp = fopen(BHTTP_PIDFILE, "w")))
+  if (fp = fopen(BHTTP_PIDFILE, "w"))
   {
     fprintf(fp, "%d\n", getpid());
     fclose(fp);
@@ -232,8 +233,8 @@ log_open()
 
 
 /* ----------------------------------------------------- */
-/* target : ANSI text to HTML tag                        */
-/* author : yiting.bbs@bbs.cs.tku.edu.tw                 */
+/* target : ANSI text to HTML tag			 */
+/* author : yiting.bbs@bbs.cs.tku.edu.tw		 */
 /* ----------------------------------------------------- */
 
 #define    ANSI_TAG       27
@@ -593,14 +594,14 @@ str_html(src, len)
 
       if (in_chi)
       {
-        if (in_chi < ' ')    /* Τ玡场碞ぃ璶 */
-          *dst++ = in_chi;
+	if (in_chi < ' ')	/* Τ玡场碞ぃ璶 */
+	  *dst++ = in_chi;
 #ifdef HAVE_SAKURA
-        else if (len = sakura2unicode((ch << 8) + in_chi))
-        {
-          sprintf(dst, "&#%d;", len);    /* 12291~12540 */
-          dst += 8;
-        }
+	else if (len = sakura2unicode((ch << 8) + in_chi))
+	{
+	  sprintf(dst, "&#%d;", len);	/* 12291~12540 */
+	  dst += 8;
+	}
 #endif
         else
         {
@@ -769,15 +770,16 @@ txt2htm(fpw, fp)
 
 
 /* ----------------------------------------------------- */
-/* HTML output basic function                            */
+/* HTML output basic function				 */
 /* ----------------------------------------------------- */
 
 static char *
-Gtime(time)
-  time_t *time;
+Gtime(now)
+  time_t *now;
 {
   static char datemsg[32];
-  strftime(datemsg, sizeof(datemsg), "%a, %d %b %Y %T GMT", gmtime(time));
+
+  strftime(datemsg, sizeof(datemsg), "%a, %d %b %Y %T GMT", gmtime(now));
   return datemsg;
 }
 
@@ -788,7 +790,7 @@ out_http(ap, code, type)
   int code;
   char *type;
 {
-  time_t now, exp;
+  time_t now;
   FILE *fpw;
   int state;
 
@@ -798,20 +800,16 @@ out_http(ap, code, type)
   /* HTTP 1.0 郎繷 */
   time(&now);
 
-  exp = now + 86400 * 30;
-
-  fprintf(fpw,
-          "HTTP/1.0 %s\r\n"
-          "Date: %s\r\n"
-          "Expires: %s\r\n"
-          "Server: MapleBBS 3.10\r\n"
-          "Connection: close\r\n", http_msg[state], Gtime(&now), Gtime(&exp));
+  fprintf(fpw, "HTTP/1.0 %s\r\n"
+    "Date: %s\r\n"
+    "Server: MapleBBS 3.10\r\n"
+    "Connection: close\r\n", http_msg[state], Gtime(&now));
 
   if (state == HS_NOTMOIDIFY)
   {
     fputs("\r\n", fpw);
   }
-  else if (state == HS_REDIRECT) /* Locationぇぃ惠璶ず甧 */
+  else if (state == HS_REDIRECT)/* Locationぇぃ惠璶ず甧 */
   {
 #if BHTTP_PORT == 80
     fprintf(fpw, "Location: http://" MYHOSTNAME "/\r\n\r\n");
@@ -824,13 +822,13 @@ out_http(ap, code, type)
     if (code & HS_REFRESH)
     {
       if (!type)
-        type = "/";
+	type = "/";
       fprintf(fpw, "Refresh: 3; url=%s\r\n", type);
     }
     if ((code & HS_REFRESH) || !type)
     {
-      fputs("Pragma: no-cache\r\n"    /* 呼ぃ琵proxy暗cache */
-            "Content-Type: text/html; charset=" MYCHARSET "\r\n", fpw);
+      fputs("Pragma: no-cache\r\n"	/* 呼ぃ琵proxy暗cache */
+	"Content-Type: text/html; charset=" MYCHARSET "\r\n", fpw);
     }
     else
       fprintf(fpw, "Content-Type: %s\r\n", type);
@@ -839,9 +837,8 @@ out_http(ap, code, type)
   return fpw;
 }
 
-
 static void
-out_error(ap, code)        /* codeぃ琌HS_OK */
+out_error(ap, code)		/* codeぃ琌HS_OK */
   Agent *ap;
   int code;
 {
@@ -849,7 +846,7 @@ out_error(ap, code)        /* codeぃ琌HS_OK */
 
   if (code < HS_OK)
   {
-    fprintf(ap->fpw, "<br />%s<br /><br />\n", http_msg[code]);
+    fprintf(ap->fpw, "<BR>%s<BR><BR>\n", http_msg[code]);
     return;
   }
 
@@ -865,7 +862,7 @@ out_error(ap, code)        /* codeぃ琌HS_OK */
   case HS_NOTFOUND:
     msg = "The requested URL was not found on this server.";
     break;
-  default:            /* HS_REDIRECT, HS_NOTMOIDIFY */
+  default:			/* HS_REDIRECT, HS_NOTMOIDIFY */
     return;
   }
 
@@ -883,6 +880,7 @@ out_error(ap, code)        /* codeぃ琌HS_OK */
           "</body>\n"
           "</html>\n", http_msg[code], http_msg[code] + 4, msg);
 }
+
 
 static void
 out_title(fpw, header, url, title, parameter)
@@ -1015,20 +1013,20 @@ out_tail(fpw)
 
 
 /* ----------------------------------------------------- */
-/* 秆絏だ猂把计                                          */
+/* 秆絏だ猂把计						 */
 /* ----------------------------------------------------- */
 
-#define hex2int(x)    ((x >= 'A') ? (x - 'A' + 10) : (x - '0'))
+#define hex2int(x)	((x >= 'A') ? (x - 'A' + 10) : (x - '0'))
 
-static int                /* 1:Θ */
+static int			/* 1:Θ */
 arg_analyze(argc, mark, str, arg1, arg2, arg3, arg4)
-  int argc;               /* Τ碭把计 */
-  int mark;               /* !=0: str 璶琌 mark 秨繷﹃ */
-  char *str;              /* ま计 */
-  char **arg1;            /* 把计 */
-  char **arg2;            /* 把计 */
-  char **arg3;            /* 把计 */
-  char **arg4;            /* 把计 */
+  int argc;			/* Τ碭把计 */
+  int mark;			/* !=0: str 璶琌 mark 秨繷﹃ */
+  char *str;			/* ま计 */
+  char **arg1;			/* 把计 */
+  char **arg2;			/* 把计 */
+  char **arg3;			/* 把计 */
+  char **arg4;			/* 把计 */
 {
   int i, ch;
   char *dst;
@@ -1047,15 +1045,15 @@ arg_analyze(argc, mark, str, arg1, arg2, arg3, arg4)
     if (ch == '&' || ch == '\r')
     {
       if (i > argc)
-        break;
+	break;
 
       *dst++ = '\0';
       if (i == 2)
-        *arg2 = dst;
+	*arg2 = dst;
       else if (i == 3)
-        *arg3 = dst;
+	*arg3 = dst;
       else /* if (i == 4) */
-        *arg4 = dst;
+	*arg4 = dst;
       i++;
     }
     else if (ch == '+')
@@ -1067,15 +1065,15 @@ arg_analyze(argc, mark, str, arg1, arg2, arg3, arg4)
       ch = *(++str);
       if (isxdigit(ch) && isxdigit(str[1]))
       {
-        ch = (hex2int(ch) << 4) + hex2int(str[1]);
-        str++;
-        if (ch != '\r')        /* '\r' 碞ぃ璶 */
-          *dst++ = ch;
+	ch = (hex2int(ch) << 4) + hex2int(str[1]);
+	str++;
+	if (ch != '\r')		/* '\r' 碞ぃ璶 */
+	  *dst++ = ch;
       }
       else
       {
-        *dst++ = '%';
-        continue;
+	*dst++ = '%';
+	continue;
       }
     }
     else
@@ -1089,7 +1087,7 @@ arg_analyze(argc, mark, str, arg1, arg2, arg3, arg4)
 }
 
 /* ----------------------------------------------------- */
-/* UTMP shm 场だ斗籔 cache.c 甧                        */
+/* UTMP shm 场だ斗籔 cache.c 甧			 */
 /* ----------------------------------------------------- */
 
 static UCACHE *ushm;
@@ -1100,8 +1098,9 @@ init_ushm()
   ushm = shm_new(UTMPSHM_KEY, sizeof(UCACHE));
 }
 
+
 /* ----------------------------------------------------- */
-/* boardshm 场斗籔 cache.c 甧                      */
+/* boardshm 场斗籔 cache.c 甧			 */
 /* ----------------------------------------------------- */
 
 static BCACHE *bshm;
@@ -1117,7 +1116,7 @@ init_bshm()
 
   bshm = shm_new(BRDSHM_KEY, sizeof(BCACHE));
 
-  if (bshm->uptime <= 0)    /* bshm ゼ砞﹚ЧΘ */
+  if (bshm->uptime <= 0)	/* bshm ゼ砞﹚ЧΘ */
     exit(0);
 }
 
@@ -1195,16 +1194,18 @@ allow_brdname(ap, brdname)
 
 
 /* ----------------------------------------------------- */
-/* movieshm 场斗籔 cache.c 甧                      */
+/* movieshm 场斗籔 cache.c 甧			 */
 /* ----------------------------------------------------- */
 
 static FCACHE *fshm;
+
 
 static void
 init_fshm()
 {
   fshm = shm_new(FILMSHM_KEY, sizeof(FCACHE));
 }
+
 
 /* ----------------------------------------------------- */
 /* command dispatch (GET)                                */

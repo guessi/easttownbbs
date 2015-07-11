@@ -118,7 +118,7 @@ log_open()
 
   umask(077);
 
-  if ((fp = fopen(GEMD_PIDFILE, "w")))
+  if (fp = fopen(GEMD_PIDFILE, "w"))
   {
     fprintf(fp, "%d\n", getpid());
     fclose(fp);
@@ -185,7 +185,7 @@ allow_path(fpath)
   if (!strncmp(fpath, "brd/", 4))
   {
     brdname = fpath + 4;
-    if ((str = strchr(brdname, '/')))
+    if (str = strchr(brdname, '/'))
     {
       *str = '\0';
       ret = allow_brdname(brdname);
@@ -210,7 +210,7 @@ str_copy(dst, src)
 {
   int ch;
 
-  while ((ch = *src++))
+  while (ch = *src++)
     *dst++ = ch;
   return dst;
 }
@@ -272,7 +272,7 @@ gem_file(ap)
       break;
     }
 
-    while ((cc = *head))
+    while (cc = *head)
     {
       if (cc == '\n')
       {
@@ -435,7 +435,7 @@ agent_serve(ap)
   if (cc != CS_FILE)
   {
     ap_log("DIR", ap->sno, data);
-    if ((str = strrchr(data, '/')))
+    if (str = strrchr(data, '/'))
     {
       if (str[1] != '.')
 	str--;
@@ -540,7 +540,7 @@ agent_recv(ap)
 
   data[cc] = '\0';
 
-  while ((cc = *data))
+  while (cc = *data)
   {
     if (cc == '\r' || cc == '\n')
     {
@@ -599,7 +599,7 @@ agent_fire(ap)
   shutdown(sock, 2);
   close(sock);
 
-  if ((fp = ap->stream))
+  if (fp = ap->stream)
     fclose(fp);
 
   fprintf(flog, "%s\t[%d] T%d D%d\n",
@@ -751,16 +751,16 @@ servo_usage()
     "system time: %.6f\n"
     "maximum resident set size: %lu P\n"
     "integral resident set size: %lu\n"
-    "page faults not requiring physical I/O: %d\n"
-    "page faults requiring physical I/O: %d\n"
-    "swaps: %d\n"
-    "block input operations: %d\n"
-    "block output operations: %d\n"
-    "messages sent: %d\n"
-    "messages received: %d\n"
-    "signals received: %d\n"
-    "voluntary context switches: %d\n"
-    "involuntary context switches: %d\n"
+    "page faults not requiring physical I/O: %ld\n"
+    "page faults requiring physical I/O: %ld\n"
+    "swaps: %ld\n"
+    "block input operations: %ld\n"
+    "block output operations: %ld\n"
+    "messages sent: %ld\n"
+    "messages received: %ld\n"
+    "signals received: %ld\n"
+    "voluntary context switches: %ld\n"
+    "involuntary context switches: %ld\n"
     "gline: %d\n\n",
 
     (double) ru.ru_utime.tv_sec + (double) ru.ru_utime.tv_usec / 1000000.0,
@@ -900,7 +900,7 @@ main(argc, argv)
     {
       tcheck = uptime - GEMD_TIMEOUT;
 
-      for (FBI = &Scully; (agent = *FBI);)
+      for (FBI = &Scully; agent = *FBI;)
       {
 	if (agent->uptime < tcheck)
 	{
@@ -982,7 +982,7 @@ main(argc, argv)
 
     uptime = time(0);
 
-    for (FBI = &Scully; (agent = *FBI);)
+    for (FBI = &Scully; agent = *FBI;)
     {
       sock = agent->sock;
 
@@ -1033,7 +1033,7 @@ main(argc, argv)
       if (sock <= 0)
 	continue;
 
-      if ((agent = Mulder))
+      if (agent = Mulder)
       {
 	Mulder = agent->anext;
       }

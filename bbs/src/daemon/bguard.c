@@ -129,7 +129,7 @@ log_open()
 
   umask(077);
 
-  if ((fp = fopen(GUARD_PIDFILE, "w")))
+  if (fp = fopen(GUARD_PIDFILE, "w"))
   {
     fprintf(fp, "%d\n", getpid());
     fclose(fp);
@@ -281,12 +281,14 @@ ushm_guard()
   do
   {
     flop++;
-    if ((pid = uentp->pid))
+    if (pid = uentp->pid)
     {
+#ifdef TIME_KICKER
 #ifdef DETAIL_IDLETIME
       idle = (now - uentp->idle_time) / 60;
 #else
       idle = uentp->idle_time;
+#endif
 #endif
       if (flop & 15)
       {
@@ -658,7 +660,7 @@ agent_serve(ap)
 
   cmd = str = ap->pool;
 
-  while ((ch = *str))
+  while (ch = *str)
   {
     str++;
     if (ch != ' ' && ch != '\t')
@@ -768,7 +770,7 @@ agent_read(ap)
 
   str[len] = '\0';
 
-  while ((cc = *str))
+  while (cc = *str)
   {
     if (cc == '\r' || cc == '\n')
     {
@@ -899,16 +901,16 @@ server_usage()
     "system time: %.6f\n"
     "maximum resident set size: %lu P\n"
     "integral resident set size: %lu\n"
-    "page faults not requiring physical I/O: %d\n"
-    "page faults requiring physical I/O: %d\n"
-    "swaps: %d\n"
-    "block input operations: %d\n"
-    "block output operations: %d\n"
-    "messages sent: %d\n"
-    "messages received: %d\n"
-    "signals received: %d\n"
-    "voluntary context switches: %d\n"
-    "involuntary context switches: %d\n"
+    "page faults not requiring physical I/O: %ld\n"
+    "page faults requiring physical I/O: %ld\n"
+    "swaps: %ld\n"
+    "block input operations: %ld\n"
+    "block output operations: %ld\n"
+    "messages sent: %ld\n"
+    "messages received: %ld\n"
+    "signals received: %ld\n"
+    "voluntary context switches: %ld\n"
+    "involuntary context switches: %ld\n"
     "gline: %d\n\n",
 
     (double) ru.ru_utime.tv_sec + (double) ru.ru_utime.tv_usec / 1000000.0,
@@ -1062,7 +1064,7 @@ main(argc, argv)
       {
 	tagent = uptime - FINGER_TIMEOUT;
 
-	for (FBI = &Scully; (agent = *FBI);)
+	for (FBI = &Scully; agent = *FBI;)
 	{
 	  if (agent->uptime < tagent)
 	  {
@@ -1136,7 +1138,7 @@ main(argc, argv)
 
     uptime = time(0);
 
-    for (FBI = &Scully; (agent = *FBI);)
+    for (FBI = &Scully; agent = *FBI;)
     {
       csock = agent->sock;
 
@@ -1188,7 +1190,7 @@ main(argc, argv)
 
 	if (csock > 0)
 	{
-	  if ((agent = Mulder))
+	  if (agent = Mulder)
 	  {
 	    Mulder = agent->next;
 	  }

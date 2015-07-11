@@ -250,7 +250,7 @@ log_open()
 
   umask(077);
 
-  if ((fp = fopen(BMTA_PIDFILE, "w")))
+  if (fp = fopen(BMTA_PIDFILE, "w"))
   {
     fprintf(fp, "%d\n", getpid());
     fclose(fp);
@@ -284,7 +284,7 @@ agent_reply(ap, msg)
   char *base, *head;
 
   head = base = ap->data;
-  while ((cc = *msg++))
+  while (cc = *msg++)
   {
     *head++ = cc;
   }
@@ -315,7 +315,7 @@ is_badid(userid)
     return 1;
 
   str = userid;
-  while ((ch = *(++str)))
+  while (ch = *(++str))
   {
     if (!is_alnum(ch))
       return 1;
@@ -394,7 +394,7 @@ getbrdname(brdname)
 {
   BRD *brd;
 
-  if ((brd = brd_get(brdname)))
+  if (brd = brd_get(brdname))
   {
     strcpy(brdname, brd->brdname);	/* 換成正確的大小寫 */
     return 1;
@@ -409,7 +409,7 @@ update_btime(brdname)
 {
   BRD *brd;
 
-  if ((brd = brd_get(brdname)))
+  if (brd = brd_get(brdname))
     brd->btime = -1;
 }
 
@@ -505,7 +505,7 @@ he_hash(key, len)
   }
   else
   {
-    while ((len = *key))
+    while (len = *key)
     {
       key++;
       seed += len << shft;
@@ -529,7 +529,7 @@ ht_new(size, keylen)
     size = HASH_TABLE_SIZE;
 
   he_len = size * sizeof(HashEntry *);
-  if ((ht = (HashTable *) malloc(sizeof(HashTable) + he_len)))
+  if (ht = (HashTable *) malloc(sizeof(HashTable) + he_len))
   {
     ht->mask = size - 1;
     ht->keylen = keylen;
@@ -657,7 +657,7 @@ ht_add(ht, key)
     {
       if (len == 0)
 	len = strlen(key) + 1;
-      if ((he = (HashEntry *) malloc(sizeof(HashEntry) + len)))
+      if (he = (HashEntry *) malloc(sizeof(HashEntry) + len))
       {
 	*hp = he;
 	he->hv = hv;
@@ -699,7 +699,7 @@ ht_expire(ht, expire)
   for (i = ht->mask; i >= 0; i--)
   {
     hp = &(ht->bucket[i]);
-    while ((he = *hp))
+    while (he = *hp)
     {
       if (he->uptime < expire)
       {
@@ -818,7 +818,7 @@ hht_expire(now)
   {
     hp = &HostHashTable[i];
 
-    while ((he = *hp))
+    while (he = *hp)
     {
       if (he->uptime < now)
       {
@@ -918,7 +918,7 @@ spam_add(he)
 {
   FILE *fp;
 
-  if ((fp = fopen(UNMAIL_ACLFILE, "a")))
+  if (fp = fopen(UNMAIL_ACLFILE, "a"))
   {
     struct tm *p;
 
@@ -987,10 +987,10 @@ splay_free(top)
   if (top == NULL)
     return;
 
-  if ((node = top->left))
+  if (node = top->left)
     splay_free(node);
 
-  if ((node = top->right))
+  if (node = top->right)
     splay_free(node);
 
   MYDOG;
@@ -1064,9 +1064,7 @@ visit_fresh()
   vx_log(fp, "標題", title_ht);
   fclose(fp);
 
-/*
-  hdr.xmode = POST_MARKED;
-*/
+  // hdr.xmode = POST_MARKED;
   strcpy(hdr.owner, "<BMTA>");
   strcpy(hdr.title, "統計資料");
   rec_bot(folder, &hdr, sizeof(HDR));
@@ -1322,6 +1320,8 @@ forward_mail(hdr, folder, userid)
   }
 }
 
+
+
 static int
 bbs_mail(ap, data, userid)
   Agent *ap;
@@ -1549,7 +1549,7 @@ bbs_valid(ap)
     sprintf(justify, "RPY: %s", ap->addr);
 
   usr_fpath(folder, userid, FN_JUSTIFY);
-  if ((fp = fopen(folder, "a")))
+  if (fp = fopen(folder, "a"))
   {
     fprintf(fp, "%s\n", justify);
     fclose(fp);
@@ -1557,7 +1557,7 @@ bbs_valid(ap)
 
   /* 在 usr 目錄留下完整回信記錄 */
   usr_fpath(folder, userid, FN_EMAIL);
-  if ((fp = fopen(folder, "w")))
+  if (fp = fopen(folder, "w"))
   {
     fprintf(fp, "ID: %s\nVALID: %s\nHost: %s\nFrom: %s\n%s\n",
       userid, justify, ap->ident, ap->addr, ap->data);
@@ -1663,7 +1663,7 @@ acl_add(root, filter)
     cc = *filter++;
     if (cc >= 'A' && cc <= 'Z')
       cc |= 0x20;
-  } while ((*str++ = cc));
+  } while (*str++ = cc);
 
   return ax;
 }
@@ -1679,18 +1679,18 @@ acl_load(fpath, root)
   ACL_t *ax, *nacl;
 
   /* 先清空 */
-  if ((ax = root))
+  if (ax = root)
   {
     do
     {
       nacl = ax->nacl;
       free(ax);
-    } while ((ax = nacl));
+    } while (ax = nacl);
 
     ax = NULL;
   }
 
-  if ((fp = fopen(fpath, "r")))
+  if (fp = fopen(fpath, "r"))
   {
     fpath = buf;
     while (fgets(fpath, sizeof(buf), fp))
@@ -1778,7 +1778,7 @@ acl_match(root, ruser, rhost)
       if (!strcmp(rhost + lhost - locus, filter))
 	return 1;
     }
-  } while ((ax = ax->nacl));
+  } while (ax = ax->nacl);
 
   return 0;
 }
@@ -1868,7 +1868,7 @@ mta_from(ap, str)
 
   if (str_cmp(head, ap->from))
   {	/* Thor.000911.註解: 如果不一樣的話, 要check; 一樣的之前check過了 */
-    if ((tail = strchr(head, '@')))	/* Thor.000911.註解: 正常的addr的話 */
+    if (tail = strchr(head, '@'))	/* Thor.000911.註解: 正常的addr的話 */
     {
       *tail++ = '\0';
       
@@ -1966,7 +1966,7 @@ is_host_alias(addr)
 
   /* check the aliases */
 
-  for (i = 0; (str = alias[i]); i++)
+  for (i = 0; str = alias[i]; i++)
   {
     if (!str_cmp(addr, str))
       return 1;
@@ -2011,7 +2011,7 @@ mta_boundary(ap, str, boundary)
   {
     char *tmp;
 
-    if ((tmp = str_str(str, "boundary=")))
+    if (tmp = str_str(str, "boundary="))
     {
       /* Thor.990221: 居然有的人不用 " */
       tmp += 9;
@@ -2026,7 +2026,7 @@ mta_boundary(ap, str, boundary)
     logit("MULTI", base);
   }
 
-  while ((cc = *str))
+  while (cc = *str)
   {
     str++;
     if (cc == '\n' && (!*str || *str > ' ' || *str == '\n'))
@@ -2117,7 +2117,7 @@ multipart(src, dst, boundary)
       }
       else
       {
-	while ((cc = *src))
+	while (cc = *src)
 	  /* Thor.980907: 剛好跳了boundary後的 \n,不是故意的 :p */
 	{
 	  src++;
@@ -2422,7 +2422,7 @@ mta_mail_body:
     char *dot;
 
     addr = ap->addr;
-    if ((dot = strchr(addr, '.')))
+    if (dot = strchr(addr, '.'))
     {
       if (!str_cmp(dot, ".bbs@" MYHOSTNAME))	/* itoc.020125.註解: 若寄信者為本站發信，只留 ID */
 	*dot = '\0';
@@ -2439,7 +2439,7 @@ mta_mail_body:
       else
 	bbs_brd(ap, data, str);
 #endif
-    } while ((rcpt = rcpt->rnext));
+    } while (rcpt = rcpt->rnext);
 
     if (dot)
       *dot = '.';
@@ -2462,14 +2462,14 @@ agent_free_rcpt(ap)
 
   ap->nrcpt = 0;
 
-  if ((rcpt = ap->rcpt))
+  if (rcpt = ap->rcpt)
   {
     ap->rcpt = NULL;
     do
     {
       next = rcpt->rnext;
       free(rcpt);
-    } while ((rcpt = next));
+    } while (rcpt = next);
   }
 }
 
@@ -2489,7 +2489,7 @@ agent_spam(ap)
 
   unmail_root = acl_add(unmail_root, from);
 
-  if ((fp = fopen(UNMAIL_ACLFILE, "a")))
+  if (fp = fopen(UNMAIL_ACLFILE, "a"))
   {
     struct tm *p;
 
@@ -2597,7 +2597,7 @@ parse_addr(addr, user, domain)
     return -2;			/* <> null domain */
 
   *ptr = '\0';
-  if ((ptr = strrchr(addr, ':')))
+  if (ptr = strrchr(addr, ':'))
   {
     relay = 1;
     addr = ptr + 1;
@@ -2615,7 +2615,7 @@ parse_addr(addr, user, domain)
   if (**user == '"')
     (*user)++;
 
-  for (ptr = NULL; (ch = *addr); addr++)
+  for (ptr = NULL; ch = *addr; addr++)
   {
     if (ch == '@')
     {
@@ -2756,7 +2756,7 @@ is_rcpt(rcpt, letter)
 
   /* check the aliases */
 
-  for (len = 0; (str = alias[len]); len++)
+  for (len = 0; str = alias[len]; len++)
   {
     if (!str_cmp(rcpt, str))
       return AM_BBSADM;
@@ -2880,10 +2880,10 @@ cmd_rcpt(ap)
     /* format: sprintf(servo_ident, "[%d] %s ip:%08x", ++servo_sno, rhost, csin.sin_addr.s_addr); */
     char rhost[256], *s;
 
-    if ((s = strchr(ap->ident, ' ')))
+    if (s = strchr(ap->ident, ' '))
     {
       strcpy(rhost, s + 1);
-      if ((s = strchr(rhost, ' ')))
+      if (s = strchr(rhost, ' '))
       {
 	*s = '\0';
 
@@ -3014,18 +3014,18 @@ cmd_nogo(ap)
 
 static Command cmd_table[] =
 {
-  {cmd_helo, "helo", "HELO <hostname> - Introduce yourself"},
-  {cmd_nogo, "ehlo", ""},		/* Thor.980929: 不支援enhanced smtp */
-  {cmd_mail, "mail", "MAIL FROM: <sender> - Specifies the sender"},
-  {cmd_rcpt, "rcpt", "RCPT TO: <recipient> - Specifies the recipient"},
-  {cmd_data, "data", ""},
-  {cmd_quit, "quit", "QUIT -     Exit sendmail (SMTP)"},
-  {cmd_noop, "noop", "NOOP -     Do nothing"},
-  {cmd_rset, "rset", "RSET -     Resets the system"},
-  {cmd_help, "help", "HELP [ <topic> ] - gives help info"},
-  {cmd_nogo, "expn", ""},
-  {cmd_nogo, "vrfy", ""},
-  {cmd_what, NULL, NULL}
+  cmd_helo, "helo", "HELO <hostname> - Introduce yourself",
+  cmd_nogo, "ehlo", "",		/* Thor.980929: 不支援enhanced smtp */
+  cmd_mail, "mail", "MAIL FROM: <sender> - Specifies the sender",
+  cmd_rcpt, "rcpt", "RCPT TO: <recipient> - Specifies the recipient",
+  cmd_data, "data", "",
+  cmd_quit, "quit", "QUIT -     Exit sendmail (SMTP)",
+  cmd_noop, "noop", "NOOP -     Do nothing",
+  cmd_rset, "rset", "RSET -     Resets the system",
+  cmd_help, "help", "HELP [ <topic> ] - gives help info",
+  cmd_nogo, "expn", "",
+  cmd_nogo, "vrfy", "",
+  cmd_what, NULL, NULL
 };
 
 
@@ -3140,7 +3140,7 @@ agent_recv(ap)
 	{
 	  size += TCP_RCVSIZ + (size >> 2);
 
-	  if ((data = (char *) realloc(data, size)))
+	  if (data = (char *) realloc(data, size))
 	  {
 	    ap->data = data;
 	    ap->size = size;
@@ -3364,7 +3364,7 @@ agent_recv(ap)
     used = 32;
   }
 
-  while ((cc = *head))
+  while (cc = *head)
   {
     if (cc == '\r' || cc == '\n')
     {
@@ -3380,7 +3380,7 @@ agent_recv(ap)
 	return -1;
       }
 
-      for (cmd = cmd_table; (head = cmd->cmd); cmd++)
+      for (cmd = cmd_table; head = cmd->cmd; cmd++)
       {
 	if (!str_ncmp(data, head, 4))
 	  break;
@@ -3389,7 +3389,7 @@ agent_recv(ap)
       MYDOG;
       ap->used = 0;
 
-      sprintf(gtext, "ip:%08x ", ap->ip_addr);
+      sprintf(gtext, "ip:%08lx ", ap->ip_addr);
       str_ncpy(gtext + 3 + 8 + 1, data, 50);
 
       (*cmd->func) (ap);
@@ -3557,16 +3557,17 @@ servo_usage()
     " system time: %.6f\n"
     " maximum resident set size: %lu P\n"
     " integral resident set size: %lu\n"
-    " page faults not requiring physical I/O: %d\n"
-    " page faults requiring physical I/O: %d\n"
-    " swaps: %d\n"
-    " block input operations: %d\n"
-    " block output operations: %d\n"
-    " messages sent: %d\n"
-    " messages received: %d\n"
-    " signals received: %d\n"
-    " voluntary context switches: %d\n"
-    " involuntary context switches: %d\ngline: %d\ngtext: %s\n",
+    " page faults not requiring physical I/O: %ld\n"
+    " page faults requiring physical I/O: %ld\n"
+    " swaps: %ld\n"
+    " block input operations: %ld\n"
+    " block output operations: %ld\n"
+    " messages sent: %ld\n"
+    " messages received: %ld\n"
+    " signals received: %ld\n"
+    " voluntary context switches: %ld\n"
+    " involuntary context switches: %ld\n"
+    " gline: %d\ngtext: %s\n",
 
     (double) ru.ru_utime.tv_sec + (double) ru.ru_utime.tv_usec / 1000000.0,
     (double) ru.ru_stime.tv_sec + (double) ru.ru_stime.tv_usec / 1000000.0,
@@ -3882,7 +3883,7 @@ main(argc, argv)
 
       tcheck = uptime - BMTA_TIMEOUT;
 
-      for (FBI = &Scully; (agent = *FBI);)
+      for (FBI = &Scully; agent = *FBI;)
       {
 	if ((agent->uptime < tcheck) || (agent->xerro > BMTA_FAULT))
 	{
@@ -3921,7 +3922,7 @@ main(argc, argv)
 
 	hht_expire(uptime - 3 * 60 * 60);
 
-	/* ht_expire(forge_ht, tcheck); *//* never expire */
+	/* ht_expire(forge_ht, tcheck); /* never expire */
 
 #ifdef FORGE_CHECK
 	/* Thor.990811: expire掉沒用的forge host */
@@ -3956,7 +3957,7 @@ main(argc, argv)
 
     n = 0;
 
-    if ((state = servo_state))
+    if (state = servo_state)
     {
       if (state & SS_CONFIG)
       {
@@ -4041,7 +4042,7 @@ main(argc, argv)
     uptime = time(0);
 
     MYDOG;
-    for (FBI = &Scully; (agent = *FBI);)
+    for (FBI = &Scully; agent = *FBI;)
     {
       sock = agent->sock;
 
@@ -4137,7 +4138,7 @@ main(argc, argv)
 	}
 #endif
 
-	if ((agent = Mulder))
+	if (agent = Mulder)
 	{
 	  Mulder = agent->anext;
 	}
