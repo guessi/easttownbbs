@@ -1882,9 +1882,8 @@ get_article_title(title, folder, pos, brdname)
   char *brdname;
 {
   HDR hdr;
-  int fd, total, find;
+  int fd, find;
 
-  total = rec_num(folder, sizeof(HDR));
   if ((fd = open(folder, O_RDONLY)) >= 0)
   {
     find = 0;
