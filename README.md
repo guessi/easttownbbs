@@ -2,19 +2,14 @@ ABOUT THE PROJECT
 -----------------
 `MapleBBS-EastTown` is a project based on `MapleBBS-3.10-itoc`, which is written in C Code and some shell scripts
 
-BBS, DEFINITION
----------------
-* Please have a look at the following link: [Bulletin Board System(BBS)](http://en.wikipedia.org/wiki/Bulletin_board_system)
-
 LICENSE
 -------
-* (not decided yet)
+* (n/a)
 
 AUTHORS
 -------
 * `MapleBBS-3.10-itoc`: itoc (itoc.bbs@cpu.tfcis.org)
 * `MapleBBS-EastTown`: guessi (guessi@gmail.com)
-* `(more)`
 
 README
 ------
@@ -22,10 +17,9 @@ README
 
 SUGGESTED ENVIRONMENTS
 ----------------------
-* `Ubuntu Server 10.04.4 LTS`
-* `Ubuntu Server 12.04.2 LTS`
-* `CentOS 6.2 Final`
-* `FreeBSD 8.2R`
+* `Ubuntu Server 12.04.5 LTS`
+* `CentOS 6.6 Final`
+* `FreeBSD 8.4R`
 
 
 * for Ubuntu Server users, just execute `setup_bbs_ubuntu.sh`, and it's done!
@@ -37,10 +31,10 @@ BEFORE INSTALL
 
 PREPARATION
 -----------
-**for Debian/Ubuntu/Mint:**
+**for Ubuntu:**
 > `$ sudo apt-get install git wget build-essential csh gcc libc6 libc6-dev make`
 
-**for CentOS/Fedora/RHEL:**
+**for CentOS:**
 > `$ su -c 'yum install git wget csh gcc telnet make'`
 
 **for FreeBSD:**
@@ -130,6 +124,14 @@ GET THE CODE
 
 TEST IT
 -------
+> `(reboot your server)`
+
+> `$ telnet 127.0.0.1 23`
+
+> `(check if everything works fine, enjoy)`
+
+> `(stop services)`
+
 > `(restore your data)`
 
 > `(reboot your server)`
