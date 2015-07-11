@@ -134,9 +134,16 @@ nf_item(num, nf)
 
   if ((bno = brd_bno(nf->board)) >= 0)
   {
-    brd = bshm->bcache + bno;
-    outgo = brd->battr & BRD_NOTRAN ? ' ' : '<';
-    income = nf->xmode & INN_NOINCOME ? ' ': '>';
+    if (nf->xmode & INN_ERROR)
+    {
+      outgo = income = '?';
+    }
+    else
+    {
+      brd = bshm->bcache + bno;
+      outgo = brd->battr & BRD_NOTRAN ? ' ' : '<';
+      income = nf->xmode & INN_NOINCOME ? ' ': '>';
+    }
   }
   else
   {
@@ -193,9 +200,10 @@ nf_query(nf)
   move(3, 0);
   clrtobot();
   prints("\n\n轉信站台：%s\n站台位址：%s\n站台協定：%s(%d)\n"
-    "轉信群組：%s\n本站看板：%s (%s%s)\n使用字集：%s", 
+    "轉信群組：%s%s\n本站看板：%s (%s%s)\n使用字集：%s", 
     nf->path, nl.host, nl.xmode & INN_USEIHAVE ? "IHAVE" : "POST", nl.port, 
-    nf->newsgroup, nf->board, outgo, income, nf->charset);
+    nf->newsgroup, nf->xmode & INN_ERROR ? " (\033[1;33m此群組不存在\033[m)" : "", 
+    nf->board, outgo, income, nf->charset);
   if (rc && !(nl.xmode & INN_FEEDED))
     prints("\n目前篇數：%d", nf->high);
   vmsg(NULL);
@@ -509,7 +517,7 @@ a_innbbs()
   vs_bar("轉信設定");
   more("etc/innbbs.hlp", (char *) -1);
 
-  switch (vans("◎ 轉信設定 1)轉文站台列表 2)轉文文章列表 3)NoCeM擋文規則 4)廣告文名單 [Q] "))
+  switch (vans("請選擇 1)轉文站台列表 2)轉文看板列表 3)NoCeM擋文規則 4)廣告文名單：[Q] "))
   {
   case '1':
     fpath = "innd/nodelist.bbs";
@@ -574,6 +582,9 @@ a_innbbs()
 	dirty = 1;
 	continue;
       }
+    /* 設定 default board */
+    strcpy(currboard, BN_NULL);
+    currbno = -1;
 
       i = st.st_size;
       num = (i / recsiz) - 1;

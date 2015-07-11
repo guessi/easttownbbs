@@ -187,7 +187,6 @@ credit_count()
     close(fd);
 
     moneyout = 0;
-
     for (fd = 0; fd <= 6; fd++)
       moneyout += way[fd];
 
@@ -210,7 +209,6 @@ credit_count()
   vmsg("您沒有記帳記錄");
   return 0;
 }
-
 
 
 int

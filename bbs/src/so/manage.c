@@ -127,7 +127,8 @@ post_terminator(xo)		/* Thor.980521: 終極文章刪除大法 */
 	}
 	else
 	{
-	  /* 若為看板就連線砍信 */
+	  /* 砍文並連線砍信 */
+
 	  cancel_post(hdr);
 	  hdr_fpath(fold, fpath, hdr);
 	  unlink(fold);
@@ -370,6 +371,7 @@ post_battr_noscore(xo)
   return XO_HEAD;
 }
 #endif	/* HAVE_SCORE */
+
 
 /* ----------------------------------------------------- */
 /* 板主功能 : 修改板主名單				 */

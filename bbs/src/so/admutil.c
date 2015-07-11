@@ -279,7 +279,6 @@ a_xfile()		/* 設定系統檔案 */
 #ifdef HAVE_LOGIN_DENIED
     BBS_ACLFILE,
 #endif
-
   };
 
   x_file(M_XFILES, desc, path);
@@ -316,6 +315,7 @@ a_resetsys()		/* 重置 */
     alog("重置系統", "");
     break;
   }
+
   return XEASY;
 }
 
@@ -350,10 +350,10 @@ show_availability(type)		/* 將 BAKPATH 裡面所有可取回備份的目錄印出來 */
       if (!strncmp(fname, type, tlen))
       {
 	len = strlen(fname) + 2;
-	if (SCR_WIDTH - col < len)
+	if (b_cols - col < len)
 	{
 	  fputc('\n', fp);
-	  col = 0;
+	  col = len;
 	}
 	else
 	{
@@ -367,7 +367,6 @@ show_availability(type)		/* 將 BAKPATH 裡面所有可取回備份的目錄印出來 */
     fclose(fp);
     closedir(dirp);
 
-    
     more(fpath, (char *) -1);
     unlink(fpath);
   }
@@ -940,17 +939,17 @@ send_list(title, fpath, list)
   char *list;		/* 寄信的名單 */
 {
   char folder[64], *ptr;
-  HDR mhdr;
+  HDR hdr;
 
   for (ptr = list; *ptr; ptr += IDLEN + 1)
   {
     usr_fpath(folder, ptr, fn_dir);
-    if (hdr_stamp(folder, HDR_LINK, &mhdr, fpath) >= 0)
+    if (hdr_stamp(folder, HDR_LINK, &hdr, fpath) >= 0)
     {
-      strcpy(mhdr.owner, str_sysop);
-      strcpy(mhdr.title, title);
-      mhdr.xmode = 0;
-      rec_add(folder, &mhdr, sizeof(HDR));
+      strcpy(hdr.owner, str_sysop);
+      strcpy(hdr.title, title);
+      hdr.xmode = 0;
+      rec_add(folder, &hdr, sizeof(HDR));
     }
   }
 }
@@ -1009,6 +1008,7 @@ m_bm()
   }
 
   curredit = EDIT_MAIL;
+  *quote_file = '\0';
   if (vedit(fpath, 1) >= 0)
   {
     vmsg("需要一段蠻長的時間，請耐心等待");
@@ -1059,6 +1059,7 @@ m_all()
   }
 
   curredit = EDIT_MAIL;
+  *quote_file = '\0';
   if (vedit(fpath, 1) >= 0)
   {
     vmsg("需要一段蠻長的時間，請耐心等待");

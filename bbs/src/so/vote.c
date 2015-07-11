@@ -612,7 +612,7 @@ vote_join(xo)
   }
 
   /* --------------------------------------------------- */
-  /* 檢查是否在投票名單中				 */
+  /* 檢查投票限制					 */
   /* --------------------------------------------------- */
 
   if (vch->vprivate == ')')	/* itoc.020117: 私人投票 */
@@ -780,7 +780,7 @@ draw_vote(fpath, folder, vch, preview)	/* itoc.030906: 投票結果 (與 account.c:dr
   items = 0;
   if (fp = fopen(fpath, "r"))
   {
-    while (fread(&choice[items].vitem, sizeof(vitem_t), 1, fp) == 1)
+    while (fread(choice[items].vitem, sizeof(vitem_t), 1, fp) == 1)
     {
       choice[items].count = 0;
       items++;
@@ -846,11 +846,11 @@ draw_vote(fpath, folder, vch, preview)	/* itoc.030906: 投票結果 (與 account.c:dr
   {
     ticket = choice[num].count;
     if (preview)	/* 顯示加買一張時的賠率 */
-      fprintf(fp, "    %-36s%5d 票 (%4.1f%%) 賠率 1:%.3f\n", &choice[num].vitem, ticket, 100.0 * ticket / fd, 0.9 * (bollt + 1) / (ticket + 1));
+      fprintf(fp, "    %-36s%5d 票 (%4.1f%%) 賠率 1:%.3f\n", choice[num].vitem, ticket, 100.0 * ticket / fd, 0.9 * (bollt + 1) / (ticket + 1));
     else if (fd)
-      fprintf(fp, "    %-36s%5d 票 (%4.1f%%)\n", &choice[num].vitem, ticket, 100.0 * ticket / fd);
+      fprintf(fp, "    %-36s%5d 票 (%4.1f%%)\n", choice[num].vitem, ticket, 100.0 * ticket / fd);
     else
-      fprintf(fp, "    %-36s%5d 票\n", &choice[num].vitem, ticket);
+      fprintf(fp, "    %-36s%5d 票\n", choice[num].vitem, ticket);
   }
 
   /* other opinions */
@@ -1289,7 +1289,6 @@ vote_all()		/* itoc.010414: 投票中心 */
     case '\n':
     case ' ':
     case 'r':
-
       vb = vbrd + (cur + pageno * XO_TALL);
 
       /* itoc.060324: 等同進入新的看板，XoPost() 有做的事，這裡幾乎都要做 */
@@ -1297,18 +1296,17 @@ vote_all()		/* itoc.010414: 投票中心 */
 	break;
 
       redraw = brd_bno(vb->brdname);	/* 借用 redraw */
-
       if (currbno != redraw)
       {
-      ch = brd_bits[redraw];
+	ch = brd_bits[redraw];
 
-      /* 處理權限 */
-      if (ch & BRD_M_BIT)
-        bbstate |= (STAT_BM | STAT_BOARD | STAT_POST);
-      else if (ch & BRD_X_BIT)
-        bbstate |= (STAT_BOARD | STAT_POST);
-      else if (ch & BRD_W_BIT)
-        bbstate |= STAT_POST;
+	/* 處理權限 */
+	if (ch & BRD_M_BIT)
+	  bbstate |= (STAT_BM | STAT_BOARD | STAT_POST);
+	else if (ch & BRD_X_BIT)
+	  bbstate |= (STAT_BOARD | STAT_POST);
+	else if (ch & BRD_W_BIT)
+	  bbstate |= STAT_POST;
 
       /* itoc.050613.註解: 人氣的減少不是在離開看板時，而是在進入新的看板或是離站時，
          這是為了避免 switch 跳看板會算錯人氣 */
@@ -1316,27 +1314,24 @@ vote_all()		/* itoc.010414: 投票中心 */
 	bshm->mantime[currbno]--;	/* 退出上一個板 */
       bshm->mantime[redraw]++;		/* 進入新的板 */
 
-      currbno = redraw;
-      bhead = bshm->bcache + currbno;
-      currbattr = bhead->battr;
-
-      strcpy(currboard, bhead->brdname);
-      str = bhead->BM;
-      sprintf(currBM, "板主：%s", *str <= ' ' ? "徵求中" : str);
-
+	currbno = redraw;
+	bhead = bshm->bcache + currbno;
+	currbattr = bhead->battr;
+	strcpy(currboard, bhead->brdname);
+	str = bhead->BM;
+	sprintf(currBM, "板主：%s", *str <= ' ' ? "徵求中" : str);
 #ifdef HAVE_BRDMATE
-      strcpy(cutmp->reading, currboard);
+	strcpy(cutmp->reading, currboard);
 #endif
 
-      brd_fpath(fpath, currboard, fn_dir);
-      
+	brd_fpath(fpath, currboard, fn_dir);
 #ifdef AUTO_JUMPPOST
-      xz[XZ_POST - XO_ZONE].xo = xo = xo_get_post(fpath, bhead);      /* itoc.010910: 為 XoPost 量身打造一支 xo_get() */
+	xz[XZ_POST - XO_ZONE].xo = xo = xo_get_post(fpath, bhead);	/* itoc.010910: 為 XoPost 量身打造一支 xo_get() */
 #else
-      xz[XZ_POST - XO_ZONE].xo = xo = xo_get(fpath);
+	xz[XZ_POST - XO_ZONE].xo = xo = xo_get(fpath);
 #endif
-      xo->key = XZ_POST;
-      xo->xyz = bhead->title;
+	xo->key = XZ_POST;
+	xo->xyz = bhead->title;
       }
 
       sprintf(fpath, "brd/%s/%s", currboard, FN_VCH);
