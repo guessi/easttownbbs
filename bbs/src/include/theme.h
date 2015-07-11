@@ -184,10 +184,10 @@ COLOR1 " 連署機制 " COLOR2 " (ry)加入連署 (kj)上下篇 (↑↓←)上下離開 (h)說明   
 COLOR1 " 美食天地 " COLOR2 "(kj)上下篇 (↑↓←)上下離開 (q)隨機推薦 (h)說明                     " 
 
 #define FOOTER_MORE	\
-COLOR1 " 瀏覽 P.%d (%d%%) " COLOR2 " (h)說明 [PgUp][PgDn][0][$]移動 (/n)搜尋 (C)暫存 (←q)結束  "
+COLOR1 " 瀏覽 P.%d (%ld%%) " COLOR2 " (h)說明 [PgUp][PgDn][0][$]移動 (/n)搜尋 (C)暫存 (←q)結束  "
 
 #define FOOTER_MORE_HAS_USERINFO	\
-COLOR1 " 瀏覽 P.%d (%d%%) " ANSI_COLOR(1;37;41) " ※注意：本頁資訊含有控制碼，內容可能因閱\讀者而異  " COLOR2 " (←q)離開 "
+COLOR1 " 瀏覽 P.%d (%ld%%) " ANSI_COLOR(1;37;41) " ※注意：本頁資訊含有控制碼，內容可能因閱\讀者而異  " COLOR2 " (←q)離開 "
 
 #define FOOTER_VEDIT	\
 COLOR1 " %s " COLOR2 " (^Z)說明 (^W)符號 (^L)重繪 (^X)檔案處理 ║%s│%s║%5d:%3d    \033[m"
