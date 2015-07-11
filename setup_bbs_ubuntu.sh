@@ -113,6 +113,10 @@ bbsnntp 7777\/udp usenet' /etc/services
 fi
 
 su bbs -c 'cd /home/bbs/src; make clean linux install update'
+result=$?
 
-echo "now you may reboot your system and check if everything works fine"
-
+if [ $result -eq 0 ]; then
+  echo "now you may reboot your system and check if everything works fine"
+else
+  echo "oops... something error"
+fi
