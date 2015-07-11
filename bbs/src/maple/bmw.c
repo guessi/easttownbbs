@@ -88,17 +88,15 @@ can_see(my, up)
   UTMP *my;
   UTMP *up;
 {
-  usint mylevel, myufo, urufo;
+  usint mylevel, urufo;
 
   if (my == cutmp)	/* ¥Î cuser. ¨Ó¥N´À cutmp-> */
   {
     mylevel = cuser.userlevel;
-    myufo = cuser.ufo;
   }
   else
   {
     mylevel = my->userlevel;
-    myufo = my->ufo;
   }
   urufo = up->ufo;
 
