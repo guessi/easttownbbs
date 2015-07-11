@@ -804,6 +804,6 @@ int
 pip_system_menu()
 {
   pip_do_menu(7, 0, pipsystemlist);
-  return;
+  return 0;
 }
 #endif		/* HAVE_GAME */

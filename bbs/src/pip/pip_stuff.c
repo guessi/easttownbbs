@@ -237,7 +237,7 @@ int				/* 1:看完醫生  0:沒病來醫院惡搞 */
 pip_see_doctor()		/* 看醫生 */
 {
   char buf[256];
-  long savemoney;
+  int savemoney;
   savemoney = d.sick * 25;
   if (d.sick <= 0)
   {
