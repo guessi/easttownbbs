@@ -14,11 +14,9 @@
 /* screen control */
 
 #define STRLEN		80	/* Length of most string data */
-#define ANSILINELEN	500	/* Maximum Screen width in chars */
+#define ANSILINELEN	500	/* Maximum Screen width in chars，不能超過 1023 */
 
-/* itoc.031123: 螢幕的寬度設為 80 也無妨，只是有些 telnet term 在貼上文字太長時，
-                會自動斷行在 79，所以在此就從其設定 */
-#define SCR_WIDTH	79	/* edit/more/talk/visio screen width */
+#define SCR_WIDTH	79	/* edit/talk/camera screen width */
 
 #define TAB_STOP	4	/* 按 TAB 換成幾格空白 (要是 2 的次方) */
 #define TAB_WIDTH	(TAB_STOP - 1)
@@ -292,7 +290,7 @@ typedef struct
   time_t tissue;		/* 發支票時間 */
   int money;
   int gold;
-  char reason[20];
+  char reason[20];		/* "[動作] brdname/userid"，假設 BNLEN、IDLEN 不超過 12 */
 }      PAYCHECK;
 
 
@@ -446,7 +444,6 @@ typedef struct MF
 #define MF_LINE		0x10	/* 分隔線 */
 #define MF_CLASS	0x20	/* 分類群組 */
 
-
 #endif  /* MY_FAVORITE */
 
 
@@ -539,6 +536,8 @@ typedef struct
 
 
 #define	FILM_SIZ	4000	/* max size for each film */
+
+
 #define FILM_OPENING0	0	/* 開頭畫面(０) */
 #define FILM_OPENING1	1	/* 開頭畫面(１) */
 #define FILM_OPENING2	2	/* 開頭畫面(２) */
@@ -600,14 +599,14 @@ typedef struct
 
 typedef struct screenline
 {
-  int oldlen;		/* previous line length */
+  int oldlen;			/* previous line length */
   int len;			/* current length of line */
   int width;			/* padding length of ANSI codes */
   int smod;			/* start of modified data */
   int emod;			/* end of modified data */
   int sso;			/* start of standout data */
   int eso;			/* end of standout data */
-  uschar mode;			/* status of line, as far as update */
+  uschar mode;			/* status of line, as far as update */	/* 由於 SL_* 的 mode 不超過八個，故用 uschar 即可 */
   uschar data[ANSILINELEN];
 }          screenline;
 
@@ -773,4 +772,3 @@ typedef struct
 } spamrule_t;
 
 #endif				/* _STRUCT_H_ */
-

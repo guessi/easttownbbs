@@ -100,10 +100,8 @@
   /* 組態規劃˙結交朋友                                */
   /* ------------------------------------------------- */
 
-#define	HAVE_MODERATED_BOARD	/* 提供好友秘密板 */
-/* 秘密看板的閱讀權限要是 PERM_SYSOP 才會被當成秘密看板 */
-/* 好友看板的閱讀權限要是 PERM_BOARD 才會被當成好友看板 */
-
+#define	HAVE_MODERATED_BOARD	/* 提供好友秘密板 */	/* 秘密看板的閱讀權限要是 PERM_SYSOP 才會被當成秘密看板 */
+							/* 好友看板的閱讀權限要是 PERM_BOARD 才會被當成好友看板 */
 #define	CHECK_ONLINE		/* itoc.010306: 文章列表中可以顯示使用者是否在站上 */
 
 #define	HAVE_BADPAL		/* itoc.010302: 提供壞人的功能 */
@@ -166,7 +164,7 @@
 #define	HAVE_UNANONYMOUS_BOARD	/* itoc.020602: 反匿名板，必須有開 BN_UNANONYMOUS */
 #endif
 
-#define	SHOW_USER_IN_TEXT       /* 在文件中 Ctrl+Q 可顯示使用者資訊(控制碼顯示) */
+#define	SHOW_USER_IN_TEXT       /* 在文件中 Ctrl+Q 可顯示 User 的名字 */
 
 #undef	ANTI_PHONETIC		/* itoc.030503: 禁用注音文 */
 
@@ -240,7 +238,7 @@
 
 #define	HAVE_EXTERNAL		/* Xyz 選單 */
 
-#ifdef	HAVE_EXTERNAL
+#ifdef HAVE_EXTERNAL
 #  define HAVE_SONG		/* itoc.010205: 提供點歌功能 */
 #  define HAVE_NETTOOL		/* itoc.010209: 提供網路服務工具 */
 #  define HAVE_GAME		/* itoc.010208: 提供遊戲 */
@@ -251,7 +249,6 @@
 #  undef  HAVE_LOVELETTER	/* itoc.020602: 提供情書產生器 */
 #  define HAVE_CALENDAR		/* itoc.020831: 提供萬年曆 */
 #endif
-
 
 #ifdef HAVE_SONG
 #  define HAVE_SONG_CAMERA	/* itoc.010207: 提供點歌到動態看板功能 */

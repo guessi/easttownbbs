@@ -24,6 +24,7 @@
 #define BRD_ANONYMOUS	0x20	/* 匿名看板 */
 #define BRD_NOSCORE	0x40	/* 不評分看板 */
 
+
 /* ----------------------------------------------------- */
 /* 各種旗標的中文意義					 */
 /* ----------------------------------------------------- */
@@ -31,8 +32,7 @@
 
 #define NUMBATTRS	7
 
-#define STR_BATTR	"zTcHvAS"
-/* itoc: 新增旗標的時候別忘了改這裡啊 */
+#define STR_BATTR	"zTcHvAS"			/* itoc: 新增旗標的時候別忘了改這裡啊 */
 
 
 #ifdef _ADMIN_C_
@@ -44,7 +44,7 @@ static char *battr_tbl[NUMBATTRS] =
   "不做熱門話題統計",		/* BRD_NOSTAT */
   "不公開投票結果",		/* BRD_NOVOTE */
   "匿名看板",			/* BRD_ANONYMOUS */
-  "不評分看板"			/* BRD_NOSCORE */
+  "不評分看板",			/* BRD_NOSCORE */
 };
 
 #endif

@@ -16,12 +16,12 @@
 /* ----------------------------------------------------- */
 
 #define	PERM_BASIC	0x00000001	/* 1-8 : 基本權限 */
-#define PERM_CHAT	0x00000002	/* 可 CHAT */
-#define	PERM_PAGE	0x00000004	/* PERM_PAGE */
-#define PERM_POST	0x00000008	/* 可貼文 推文 修改文章 */
-#define	PERM_VALID 	0x00000010	/* 通過完整身分認證 */
-#define PERM_MBOX	0x00000020	/* 信箱無上限 */
-#define PERM_CLOAK	0x00000040	/* 隱身術 */
+#define PERM_CHAT	0x00000002
+#define	PERM_PAGE	0x00000004
+#define PERM_POST	0x00000008
+#define	PERM_VALID 	0x00000010	/* LOGINOK */
+#define PERM_MBOX	0x00000020
+#define PERM_CLOAK	0x00000040
 #define PERM_XEMPT 	0x00000080
 
 #define	PERM_MVALID	0x00000100	/* 初步認證 */
@@ -79,13 +79,11 @@
                   ├ 看板總管 PERM_BOARD : 可以修改看板設定、進入秘密及好友看板。
                   │
                   └ 全體站務 PERM_ALLADMIN : 以上四個總管，都有以下功能：
-                     上站來源設定、隱身術、紫隱、看見保密的精華區、
-                     不必定期認證、無須新手見習三天、multi-login、
-                     修改站上文件、更新系統、引言可以過多、
-                     寄信給全站使用者、信箱無上限。
+                     上站來源設定、隱身術、紫隱、不必定期認證、無須新手見習三天、multi-login、
+                     修改站上文件、更新系統、引言可以過多、寄信給全站使用者、信箱無上限。
 
   站長 PERM_SYSOP 除了以上所有功能，還擁有以下功能：
-  精華區建置絲路及資料、閱讀所有人的信件、得知所有人在看哪個板、開啟站務權限。
+  精華區建置資料、精華區看到加密目錄的標題、閱讀所有人的信件、得知所有人在看哪個板、開啟站務權限。
   
 #endif
 
@@ -96,7 +94,6 @@
 #define PERM_ALLBOARD	(PERM_SYSOP | PERM_BOARD)			/* 看板管理 */
 
 #define PERM_ALLVALID	(PERM_VALID | PERM_POST | PERM_PAGE | PERM_CHAT)	/* 認證通過後應有的完整權限 */
-
 #define PERM_ALLDENY	(PERM_DENYPOST | PERM_DENYTALK | PERM_DENYCHAT | PERM_DENYMAIL)	/* 所有停權 */
 
 #define PERM_LOCAL	PERM_BASIC	/* 不是 guest 就能寄信到站內其他使用者 */

@@ -218,6 +218,25 @@
 /* ----------------------------------------------------- */
 
 
+#if 0	/* itoc.000512: 系統看板，預設小寫，大寫無妨 */
+看板        中   文   敘   述       閱讀權限      發表權限
+sysop       站務 報告站長‧給我報報 0             0
+0announce   站務 奉天承運‧站長詔曰 0             PERM_ALLADMIN
+test        站務 測試專區‧新手試爆 0             PERM_BASIC
+note        站務 動態看板‧珠機話語 0             PERM_POST
+newboard    站務 開闢專欄‧連署重地 0             PERM_POST
+ktv         站務 點歌記錄‧真情對話 0             PERM_SYSOP
+record      站務 酸甜苦辣‧系統記錄 0             PERM_SYSOP
+deleted     站務 文章拯救‧資源回收 PERM_BM       PERM_SYSOP
+bm          站務 專業討論‧板主交誼 PERM_BM       0
+admin       站務 惡搞天地‧站長自摸 PERM_ALLADMIN 0
+log         站務 系統保險‧安全記錄 PERM_ALLADMIN PERM_SYSOP
+junk        站務 文章清理‧垃圾掩埋 PERM_ALLBOARD PERM_SYSOP
+UnAnonymous 站務 黑函滿天‧匿名現身 PERM_ALLBOARD PERM_SYSOP
+
+其中限制讀取的看板在 Class 分類中要設定 資料保密
+#endif
+
 /* 以下是一定要有的系統看板，但是一個板可以重覆使用多次，例如投稿歌本的和動態看板共用 note 板 */
 
 #define BN_CAMERA	"note"		/* 動態看板放在這板的精華區 */
@@ -246,7 +265,7 @@
 
 #define KEY_BKSP	8	/* 和 Ctrl('H') 相同 */
 #define KEY_TAB		9	/* 和 Ctrl('I') 相同 */
-#define KEY_ENTER	10	/* 和 Ctrl('M') Ctrl('J') 相同 */
+#define KEY_ENTER	10	/* 和 Ctrl('J') 相同 */
 #define KEY_ESC		27
 #define KEY_UP		-1
 #define KEY_DOWN	-2
@@ -289,15 +308,15 @@ KEY_RIGHT fffffffd	KEY_LEFT  fffffffc
 ┌──┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┐
 │ HEX│00│01│02│03│04│05│06│07│08│09│0a│0b│0c│0d│0e│0f│
 ├──┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┤
-│ KEY│  │^A│^B│^C│^D│^E│^F│^G│^H│^I│^J│^K│^L│  │^N│^O│
+│ KEY│  │^A│^B│^C│^D│^E│^F│^G│^H│^I│^J│^K│^L│^M│^N│^O│
 ├──┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┤
 │ HEX│10│11│12│13│14│15│16│17│18│19│1a│1b│1c│1d│1e│1f│
 ├──┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┤
 │ KEY│^P│^Q│^R│^S│^T│^U│^V│^W│^X│^Y│^Z│Es│  │  │  │  │
 ├──┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┤
-│ HEX│20│21│22│23│24│25│26│27│28│29│2a│2b│2c│2d│2e│2f│	/* 22 是雙引號，避免 compile 錯誤 */
+│ HEX│20│21│22│23│24│25│26│27│28│29│2a│2b│2c│2d│2e│2f│	/* 0x22 是雙引號，避免 compile 錯誤 */
 ├──┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┤
-│ KEY│  │ !│XX│ #│ $│ %│ &│XX│ (│ )│ *│  │ ,│ -│ .│ /│	/* 27 是單引號，避免 compile 錯誤 */
+│ KEY│  │ !│XX│ #│ $│ %│ &│XX│ (│ )│ *│  │ ,│ -│ .│ /│	/* 0x27 是單引號，避免 compile 錯誤 */
 ├──┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┤
 │ HEX│30│31│32│33│34│35│36│37│38│39│3a│3b│3c│3d│3e│3f│
 ├──┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┼─┤
@@ -320,11 +339,12 @@ KEY_RIGHT fffffffd	KEY_LEFT  fffffffc
 │ KEY│ p│ q│ r│ s│ t│ u│ v│ w│ x│ y│ z│ {│ |│ }│  │  │
 └──┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┘
 
-/* 特別注意: 值重覆 */
+/* 值重覆 */
 
-KEY_BKSP = Ctrl('H') == 08
-KEY_TAB == Ctrl('I') == 09
-KEY_ENTER == Ctrl('M') == Ctrl('J') == 0a
+KEY_BKSP == Ctrl('H') == 0x08
+'\t' == Ctrl('I') == 0x09
+'\n' == Ctrl('J') == 0x0a
+'\r' == Ctrl('M') == 0x0d
 
 #endif
 
@@ -344,6 +364,7 @@ KEY_ENTER == Ctrl('M') == Ctrl('J') == 0a
 #define	STR_POST1	"看板:"
 #define	STR_POST2	"站內:"
 #define	STR_REPLY	"Re: "
+#define	STR_FORWARD	"Fw: "
 
 #define STR_LINE	"\n\
 > -------------------------------------------------------------------------- <\n\n"
