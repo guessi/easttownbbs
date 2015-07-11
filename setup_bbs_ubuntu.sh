@@ -16,8 +16,8 @@ sleep 10
 # configuration
 DIR=`cd $(dirname $0); pwd`
 GITSRC="git://github.com/guessi/easttownbbs.git"
-UID="9999"
-GID="999"
+BBSUID="9999"
+BBSGID="999"
 USER="bbs"
 GROUP="bbs"
 BBSHOME="/home/bbs"
@@ -37,16 +37,16 @@ grep -q "^${GROUP}" /etc/group
 if [ $? -eq 0 ]; then
   echo "Skip, already exist"
 else
-  groupadd -g ${GID} ${GROUP}
+  groupadd -g ${BBSGID} ${GROUP}
   echo "Done"
 fi
 
 echo -n "Checking group \"bbs\" GID... "
 TMP=`grep "${USER}" /etc/group | cut -d":" -f3`
-if [ ${TMP} != ${GID} ]; then
+if [ ${TMP} != ${BBSGID} ]; then
   echo ${TMP}
   echo -n "Changing group \"bbs\" GID... "
-  groupmod -g ${GID} ${GROUP}
+  groupmod -g ${BBSGID} ${GROUP}
   echo "Done"
 else
   echo "Pass"
@@ -59,7 +59,7 @@ if [ $? -eq 0 ]; then
 else
   echo "Not found"
   echo -n "Creating user \"bbs\"... "
-  useradd -m -u ${UID} -g ${GROUP} -s ${USRSHELL} -p ${ENCRYPTED} ${USER}
+  useradd -m -u ${BBSUID} -g ${GROUP} -s ${USRSHELL} -p ${ENCRYPTED} ${USER}
   echo "Done"
 fi
 
