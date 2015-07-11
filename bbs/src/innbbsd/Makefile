@@ -12,6 +12,9 @@
 # 下列的 make rules 不需修改				 #
 # ------------------------------------------------------ #
 
+
+CC	= gcc
+
 INNOBJS	= channel.o bbslib.o convcode.o inntobbs.o rec_article.o nocem.o history.o
 
 LNKOBJS	= bbslink.o bbslib.o convcode.o inntobbs.o rec_article.o nocem.o history.o
@@ -32,25 +35,25 @@ all:
 	@echo " make cygwin  : for Microsoft Windows and Cygwin gcc"
 
 sun:
-	@$(MAKE) CC=gcc CFLAGS="-O2 -pipe -fomit-frame-pointer -fno-stack-protector -Wunused-result -Wunused -I../include" LDFLAGS="-s -L../lib -ldao" $(EXE)
+	@$(MAKE) CFLAGS="-O2 -pipe -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses -I../include" LDFLAGS="-s -L../lib -ldao" $(EXE)
 
 linux:
-	@$(MAKE) CC=gcc CFLAGS="-O2 -pipe -I../include -fomit-frame-pointer -fno-stack-protector -Wunused-result -Wunused" LDFLAGS="-s -L../lib -ldao" $(EXE)
+	@$(MAKE) CFLAGS="-O2 -pipe -I../include -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses" LDFLAGS="-s -L../lib -ldao" $(EXE)
 
 solaris:
-	@$(MAKE) CC=gcc CFLAGS="-DSOLARIS -O2 -pipe -I../include -fomit-frame-pointer -fno-stack-protector -Wunused-result -Wunused" LDFLAGS="-s -L../lib -ldao -lsocket -lnsl -L/usr/ucblib -lucb" $(EXE)
+	@$(MAKE) CFLAGS="-DSOLARIS -O2 -pipe -I../include -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses" LDFLAGS="-s -L../lib -ldao -lsocket -lnsl -L/usr/ucblib -lucb" $(EXE)
 
 sol-x86:
-	@$(MAKE) CC=gcc CFLAGS="-DSOLARIS -O2 -I../include -fomit-frame-pointer -fno-stack-protector -Wunused-result -Wunused" LDFLAGS="-s -L../lib -ldao -lsocket -lnsl" $(EXE)
+	@$(MAKE) CFLAGS="-DSOLARIS -O2 -I../include -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses" LDFLAGS="-s -L../lib -ldao -lsocket -lnsl" $(EXE)
 
 freebsd:
-	@$(MAKE) CC=gcc CFLAGS="-O2 -pipe -I../include -fomit-frame-pointer -fno-stack-protector -Wunused-result -Wunused" LDFLAGS="-s -L../lib -ldao" $(EXE)
+	@$(MAKE) CFLAGS="-O2 -pipe -I../include -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses" LDFLAGS="-s -L../lib -ldao" $(EXE)
 
 bsd:
-	@$(MAKE) CC=gcc CFLAGS="-O2 -pipe -I../include -fomit-frame-pointer -fno-stack-protector -Wunused-result -Wunused" LDFLAGS="-s -L../lib -ldao" $(EXE)
+	@$(MAKE) CFLAGS="-O2 -pipe -I../include -fomit-frame-pointer -Wunused -Wno-unused-result -Wno-parentheses" LDFLAGS="-s -L../lib -ldao" $(EXE)
 
 cygwin:
-	@$(MAKE) CC=gcc CFLAGS="-DCYGWIN -O2 -pipe -I../include -fomit-frame-pointer -fno-stack-protector -Wunused-result -Wunused" LDFLAGS="-s -L../lib -ldao -lcygipc" $(EXE)
+	@$(MAKE) CFLAGS="-DCYGWIN -O2 -pipe -I../include -fomit-frame-pointer -Wunused" LDFLAGS="-s -L../lib -ldao -lcygipc" $(EXE)
 
 
 

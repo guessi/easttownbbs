@@ -61,8 +61,7 @@ conv_init()
 
 static void
 b2g(src, dst)
-  unsigned char *src;
-  unsigned char *dst;
+  unsigned char *src, *dst;
 {
   int i;
 
@@ -90,8 +89,7 @@ b2g(src, dst)
 
 static void
 g2b(src, dst)
-  unsigned char *src;
-  unsigned char *dst;
+  unsigned char *src, *dst;
 {
   int i;
 
