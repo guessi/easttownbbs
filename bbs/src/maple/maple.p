@@ -257,7 +257,6 @@ int every_Z(int zone);
 int every_U(int zone);
 int xo_cursor(int ch, int pagemax, int num, int *pageno, int *pos, int *redraw);
 void xo_help(char *path);
-int quick_exit(void);
 
 /* xpost.c */
 int xpost_head(XO *xo);
