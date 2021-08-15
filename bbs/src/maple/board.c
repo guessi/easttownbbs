@@ -253,7 +253,7 @@ brh_visit(mode)
 }
 
 
-int
+void
 brh_add(prev, chrono, next)
   time_t prev, chrono, next;
 {

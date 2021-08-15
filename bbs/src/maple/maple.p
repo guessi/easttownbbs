@@ -40,7 +40,7 @@ int t_display(void);
 void brh_get(time_t bstamp, int bhno);
 int brh_unread(time_t chrono);
 void brh_visit(int mode);
-int brh_add(time_t prev, time_t chrono, time_t next);
+void brh_add(time_t prev, time_t chrono, time_t next);
 int bstamp2bno(time_t stamp);
 void brh_save(void);
 void brd_force(void);
