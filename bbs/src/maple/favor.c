@@ -497,7 +497,6 @@ mf_browse(xo)
 {
   int type, bno;
   char *xname, fpath[64];
-  BRD *brd;
   MF *mf;
 
   mf = (MF *) xo_pool + (xo->pos - xo->top);
@@ -514,7 +513,6 @@ mf_browse(xo)
       return mf_load(xo);
     }
 
-    brd = bshm->bcache + bno;
     XoPost(bno);
     xover(XZ_POST);
 #ifndef ENHANCED_VISIT
