@@ -17,7 +17,7 @@ sleep 10
 DIR=`cd $(dirname $0); pwd`
 GITSRC="git://github.com/guessi/easttownbbs.git"
 BBSUID="9999"
-BBSGID="999"
+BBSGID="9999"
 USER="bbs"
 GROUP="bbs"
 BBSHOME="/home/bbs"
@@ -25,9 +25,20 @@ USRSHELL="/bin/bash"
 PASSWORD="changeme"
 ENCRYPTED=`openssl passwd -1 ${PASSWORD}`
 
+echo "setup source.list... "
+if [ "$(lsb_release -cs)" = "precise" ]; then
+  sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+fi
+
 # package setup
 echo "apt-get update... "
-apt-get update -qq
+apt-get update
+
+echo "security upgrade..."
+apt-get upgrade -y
+
+echo "Preparing for basic packages... "
+apt-get install -qqy curl wget vim tree htop
 
 echo "Preparing for the required packages... "
 apt-get install -qqy git wget build-essential csh gcc libc6 libc6-dev make
@@ -71,8 +82,8 @@ echo "Done"
 
 mkdir -p ${BBSHOME}
 git clone ${GITSRC}
-cp -rf ${DIR}/easttownbbs/bbs/* ${BBSHOME}
-sed -i '/^#define BBSGID/s/[ \t]\+99/\t\t999/' ${BBSHOME}/src/include/config.h
+cp -rf ./easttownbbs/bbs/* ${BBSHOME}
+sed -i '/^#define BBSGID/s/[ \t]\+99/\t\t9999/' ${BBSHOME}/src/include/config.h
 chown -R bbs:bbs ${BBSHOME}
 
 echo -n "Setting up for rc.local... "
