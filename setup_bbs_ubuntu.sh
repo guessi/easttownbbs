@@ -83,6 +83,7 @@ echo "Done"
 mkdir -p ${BBSHOME}
 git clone ${GITSRC}
 cp -rf ./easttownbbs/bbs/* ${BBSHOME}
+cp -rvf ./easttownbbs/bbs/.BRD ${BBSHOME}
 sed -i '/^#define BBSGID/s/[ \t]\+99/\t\t9999/' ${BBSHOME}/src/include/config.h
 chown -R bbs:bbs ${BBSHOME}
 
